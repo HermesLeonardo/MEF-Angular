@@ -1,1 +1,43 @@
-<p>dashboard-home works!</p>
+<div class="dashboard-container">
+    <app-sidebar></app-sidebar>
+  
+    <div class="main-content">
+      <!-- TOPO -->
+      <header class="dashboard-header">
+        <app-icon-input placeholder="Search..." [(ngModel)]="searchQuery"></app-icon-input>
+  
+        <div class="dashboard-header-actions">
+          <button class="notification-button">
+            <i class="pi pi-bell"></i>
+            <span class="notification-dot">1</span>
+          </button>
+  
+          <app-custom-button label="New Company" icon="pi pi-plus-circle" (click)="openAddCompanyModal()"></app-custom-button>
+        </div>
+      </header>
+  
+      <!-- CORPO -->
+      <main class="dashboard-body">
+        <!-- Section: Companies -->
+        <section class="companies-section">
+          <h2>Companies and Clients</h2>
+          <div class="company-grid">
+            <app-company-card *ngFor="let company of companies"
+              [name]="company.name"
+              [employeeCount]="company.employeeCount"
+              [lastUpdate]="company.lastUpdate"
+              [type]="company.type"
+              >
+            </app-company-card>
+          </div>
+        </section>
+  
+        <!-- Section: Recent Files -->
+        <section class="files-section">
+          <h2>Recent Files</h2>
+          <!-- Search input + table vão aqui depois -->
+        </section>
+      </main>
+    </div>
+  </div>
+  
