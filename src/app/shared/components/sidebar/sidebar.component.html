@@ -1,21 +1,32 @@
 <div class="sidebar">
-    <div class="sidebar-header">
-      <div class="logo">MEF</div>
+  <div class="sidebar-header">
+    <div class="logo">MEF</div>
+    <div class="user-card">
+      <div class="avatar">JS</div>
       <div class="user-info">
-        <div class="avatar">JS</div>
-        <div class="user-details">
-          <span class="username">Escritório X</span>
-          <span class="email">joao.silva#escritoriox.com</span>
-        </div>
-        <i class="pi pi-external-link"></i>
+        <div class="username">Escritório X</div>
+        <div class="email">joao.silva#escritoriox.com</div>
       </div>
+      <i class="pi pi-external-link"></i>
     </div>
-  
-    <nav class="sidebar-menu">
-      <a routerLink="/home" routerLinkActive="active"><i class="pi pi-home"></i> Home</a>
-      <a><i class="pi pi-bell"></i> Notifications</a>
-      <a><i class="pi pi-user"></i> Profile</a>
-      <a><i class="pi pi-cog"></i> Settings</a>
-    </nav>
   </div>
-  
+
+  <nav class="sidebar-menu">
+    <a routerLink="/home" routerLinkActive="active">
+      <i class="pi pi-home"></i>
+      <span>Home</span>
+    </a>
+    <a>
+      <i class="pi pi-bell"></i>
+      <span>Notifications</span>
+    </a>
+    <a>
+      <i class="pi pi-user"></i>
+      <span>Profile</span>
+    </a>
+    <a>
+      <i class="pi pi-cog"></i>
+      <span>Settings</span>
+    </a>
+  </nav>
+</div>
