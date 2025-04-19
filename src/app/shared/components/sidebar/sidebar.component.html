@@ -1,12 +1,16 @@
 <div class="sidebar">
   <div class="sidebar-header">
     <div class="logo">MEF</div>
+
     <div class="user-card">
-      <div class="avatar">JS</div>
+      <div class="avatar" *ngIf="!avatarUrl">{{ nome.charAt(0) }}</div>
+      <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar-img" />
+
       <div class="user-info">
-        <div class="username">Escritório X</div>
-        <div class="email">joao.silva#escritoriox.com</div>
+        <div class="username">{{ nome }}</div>
+        <div class="email">{{ email }}</div>
       </div>
+
       <i class="pi pi-external-link"></i>
     </div>
   </div>
@@ -16,15 +20,18 @@
       <i class="pi pi-home"></i>
       <span>Home</span>
     </a>
-    <a>
+
+    <a routerLink="/notifications" routerLinkActive="active">
       <i class="pi pi-bell"></i>
       <span>Notifications</span>
     </a>
-    <a>
+
+    <a routerLink="/profile" routerLinkActive="active">
       <i class="pi pi-user"></i>
       <span>Profile</span>
     </a>
-    <a>
+
+    <a routerLink="/settings" routerLinkActive="active">
       <i class="pi pi-cog"></i>
       <span>Settings</span>
     </a>
