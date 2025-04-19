@@ -1,0 +1,119 @@
+:host {
+  display: block;
+  height: 100%;
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.config-layout {
+  display: flex;
+}
+
+.config-wrapper {
+  flex: 1;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.config-card {
+  background-color: var(--card);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+h3 {
+  margin-bottom: 1rem;
+}
+
+.custom-checkbox {
+  margin: 0.8rem 0;
+}
+
+.custom-checkbox input[type="checkbox"],
+.custom-checkbox input[type="radio"] {
+  opacity: 0;
+  position: absolute;
+}
+
+.custom-checkbox label {
+  position: relative;
+  padding-left: 2rem;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+}
+
+.custom-checkbox .checkmark {
+  position: absolute;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #2a2e3b;
+  border: 1px solid #555;
+  border-radius: 4px;
+}
+
+.custom-checkbox input:checked + .checkmark {
+  background-color: #3f51b5;
+  border-color: #3f51b5;
+}
+
+.custom-checkbox .checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.custom-checkbox input:checked + .checkmark:after {
+  display: block;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+input[type="text"],
+input[type="email"] {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: none;
+  background: #fff;
+  color: #000;
+}
+
+button {
+  padding: 0.6rem;
+  background-color: #3f51b5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #5c6bc0;
+}
+
+.config-layout {
+  display: flex;
+  min-height: 100vh;
+}

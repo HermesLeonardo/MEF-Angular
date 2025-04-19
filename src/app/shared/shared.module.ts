@@ -1,23 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IconInputComponent } from './components/icon-input/icon-input.component';
-import { CompanyCardComponent } from './components/company-card/company-card.component';
-import { CustomButtonComponent } from './components/custom-button/custom-button.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { IconInputComponent } from './components/icon-input/icon-input.component';
+import { CustomButtonComponent } from './components/custom-button/custom-button.component';
+import { CompanyCardComponent } from './components/company-card/company-card.component';
 
 @NgModule({
   declarations: [
-    IconInputComponent,
-    CompanyCardComponent,
     SidebarComponent,
-    CustomButtonComponent
+    IconInputComponent,
+    CustomButtonComponent,
+    CompanyCardComponent
   ],
   imports: [CommonModule],
   exports: [
-    IconInputComponent,
-    CompanyCardComponent,
     SidebarComponent,
-    CustomButtonComponent
+    IconInputComponent,
+    CustomButtonComponent,
+    CompanyCardComponent,
+    SidebarComponent
   ]
 })
 export class SharedModule {}
