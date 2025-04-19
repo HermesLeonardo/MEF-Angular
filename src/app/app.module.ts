@@ -6,8 +6,15 @@ import { ConfigPageModule } from './modules/home/page/config-page/config-page.mo
 import { HomeModule } from './modules/home/home.module';
 import { SharedModule } from './shared/shared.module';
 
+
 @NgModule({
+
   declarations: [AppComponent],
+
+  declarations: [
+    AppComponent
+  ],
+
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -17,4 +24,7 @@ import { SharedModule } from './shared/shared.module';
   ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule {}
+
+export class AppModule { }
