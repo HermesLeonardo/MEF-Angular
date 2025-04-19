@@ -11,9 +11,6 @@ import { SharedModule } from './shared/shared.module';
 
   declarations: [AppComponent],
 
-  declarations: [
-    AppComponent
-  ],
 
   imports: [
     BrowserModule,
@@ -27,4 +24,3 @@ import { SharedModule } from './shared/shared.module';
 
 export class AppModule {}
 
-export class AppModule { }
