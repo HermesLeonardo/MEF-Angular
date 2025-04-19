@@ -5,26 +5,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { ConfigPageModule } from './modules/home/page/config-page/config-page.module';
 import { HomeModule } from './modules/home/home.module';
 import { SharedModule } from './shared/shared.module';
+import { ProfilePageModule } from './modules/home/page/profile-page/profile.module';
 
 
 @NgModule({
 
   declarations: [AppComponent],
 
-  declarations: [
-    AppComponent
-  ],
-
   imports: [
     BrowserModule,
     AppRoutingModule,
     ConfigPageModule,
     HomeModule,
-    SharedModule
+    SharedModule,
+    ProfilePageModule
   ],
   bootstrap: [AppComponent]
 })
 
 export class AppModule {}
-
-export class AppModule { }
