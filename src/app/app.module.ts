@@ -19,8 +19,11 @@ import { ProfilePageModule } from './modules/home/page/profile-page/profile.modu
     HomeModule,
     SharedModule,
     ProfilePageModule
+
   ],
   bootstrap: [AppComponent]
 })
 
+
 export class AppModule {}
+
