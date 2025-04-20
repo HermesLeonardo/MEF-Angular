@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DashboardHomeComponent } from './modules/home/page/dashboard-home/dashboard-home.component';
 
 const routes: Routes = [
+  //* Algo Temporario para chamar a dash
+  { path: 'dash', component: DashboardHomeComponent },
   {
     path: 'login',
     loadChildren: () =>

@@ -1,0 +1,18 @@
+.card {
+    color: #000;
+    background-color: rgb(255, 255, 255);
+    height: 100%;
+    width: 80%;
+    border-radius: 5%;
+}
+.card-button {
+    align-items: end;
+}
+.paragraf {
+    color: blueviolet;
+    padding-left: 10%;
+}
+.Opc-button {
+    align-items: baselines;
+    
+}
