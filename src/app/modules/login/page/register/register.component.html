@@ -1,0 +1,40 @@
+<div class="register-wrapper">
+  <!-- Lado esquerdo: FORMULÁRIO -->
+  <div class="left-panel">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      <h2>CADASTRO</h2>
+      <p>Comece aqui!</p>
+
+      <mat-form-field appearance="outline">
+        <mat-icon matPrefix>email</mat-icon>
+        <input matInput type="email" placeholder="Email" formControlName="email" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-icon matPrefix>lock</mat-icon>
+        <input matInput type="password" placeholder="Senha" formControlName="senha" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-icon matPrefix>lock</mat-icon>
+        <input matInput type="password" placeholder="Confirmar senha" formControlName="confirmarSenha" />
+      </mat-form-field>
+
+      <p class="terms">
+        Ao criar uma conta, você concorda com nossos
+        <a href="#">Termos de Uso</a> e <a href="#">Políticas de Privacidade</a>
+      </p>
+
+      <button mat-raised-button color="primary" type="submit" class="btn-submit">CRIAR</button>
+    </form>
+  </div>
+
+  <!-- Lado direito: VISUAL AZUL -->
+  <div class="right-panel">
+    <div class="logo">MEF</div>
+    <h1>MEF</h1>
+    <p class="welcome-text">Bem-vindo de volta!</p>
+    <p>Já possui uma conta?</p>
+    <a href="/login" class="btn-secondary">Entrar</a>
+  </div>
+</div>

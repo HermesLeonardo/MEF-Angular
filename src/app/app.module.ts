@@ -1,3 +1,5 @@
+import { LoginModule } from './modules/login/login.module';
+
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
@@ -8,9 +10,20 @@ import { SharedModule } from './shared/shared.module';
 import { ProfilePageModule } from './modules/home/page/profile-page/profile.module';
 
 
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+
+
+
 @NgModule({
 
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+
+  ],
 
   imports: [
     BrowserModule,
@@ -18,7 +31,14 @@ import { ProfilePageModule } from './modules/home/page/profile-page/profile.modu
     ConfigPageModule,
     HomeModule,
     SharedModule,
-    ProfilePageModule
+    ProfilePageModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+
+    LoginModule,
 
   ],
   bootstrap: [AppComponent]
