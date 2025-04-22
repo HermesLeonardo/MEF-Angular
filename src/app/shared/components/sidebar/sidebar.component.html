@@ -16,24 +16,20 @@
   </div>
 
   <nav class="sidebar-menu">
-    <a routerLink="/home" routerLinkActive="active">
+    <button (click)="goTo('/home')">
       <i class="pi pi-home"></i>
       <span>Home</span>
-    </a>
+    </button>
 
-    <a routerLink="/notifications" routerLinkActive="active">
-      <i class="pi pi-bell"></i>
-      <span>Notifications</span>
-    </a>
-
-    <a routerLink="/profile" routerLinkActive="active">
+    <button (click)="goTo('/profile')">
       <i class="pi pi-user"></i>
       <span>Profile</span>
-    </a>
+    </button>
 
-    <a routerLink="/settings" routerLinkActive="active">
+    <button (click)="goTo('/configurations')">
       <i class="pi pi-cog"></i>
       <span>Settings</span>
-    </a>
+    </button>
   </nav>
+
 </div>
