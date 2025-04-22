@@ -1,4 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+body.dark-theme {
+  --bg: #0e1525;
+  --text: #ffffff;
+  --card: #1c253b;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body.light-theme {
+  --bg: #f5f5f5;
+  --text: #000000;
+  --card: #ffffff;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+}

@@ -1,0 +1,129 @@
+.register-wrapper {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Painel esquerdo: formulário branco */
+.left-panel {
+  flex: 1;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  min-width: 50%;
+  box-sizing: border-box;
+}
+
+/* Painel direito: fundo azul gradiente */
+.right-panel {
+  flex: 1;
+  background: linear-gradient(to bottom, #60a5fa, #4f46e5); /* Azul claro → azul escuro */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  min-width: 50%;
+  box-sizing: border-box;
+  gap: 1rem;
+}
+
+
+.register-form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.register-form h2 {
+  text-align: center;
+  font-weight: bold;
+}
+
+.register-form p {
+  text-align: center;
+  margin: 0;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.terms {
+  font-size: 0.75rem;
+  color: #666;
+  text-align: left;
+}
+
+.terms a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.btn-submit {
+  border-radius: 8px;
+  padding: 0.5rem;
+  font-weight: bold;
+  background-color: #3b82f6;
+  color: white;
+}
+
+.right-panel .logo {
+  background: #3b82f6;
+  color: white;
+  width: 70px;
+  height: 70px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+
+.right-panel h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.right-panel p {
+  font-size: 1.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.btn-secondary {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  padding: 0.6rem 2rem;
+  border-radius: 9999px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
