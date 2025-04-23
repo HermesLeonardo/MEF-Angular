@@ -1,66 +1,52 @@
 <div class="config-layout">
   <app-sidebar></app-sidebar>
 
-  <div class="config-wrapper">
-    <h2>Configurações</h2>
+  <div class="config-content">
 
-    <div class="config-card">
-      <h3>Notificações</h3>
-      <div class="custom-checkbox">
-        <label>
-          <input type="checkbox" [(ngModel)]="notificacoesEmail" />
-          <span class="checkmark"></span>
-          Notificações por email
-        </label>
-      </div>
-      <div class="custom-checkbox">
-        <label>
-          <input type="checkbox" [(ngModel)]="notificacoesApp" />
-          <span class="checkmark"></span>
-          Notificações no aplicativo
-        </label>
-      </div>
-      <div class="custom-checkbox">
-        <label>
-          <input type="checkbox" [(ngModel)]="atualizacoesSistema" />
-          <span class="checkmark"></span>
-          Atualizações do sistema
-        </label>
-      </div>
-      <div class="custom-checkbox">
-        <label>
-          <input type="checkbox" [(ngModel)]="marketing" />
-          <span class="checkmark"></span>
-          Comunicações de marketing
-        </label>
-      </div>
-    </div>
-
+    <!-- Aparência -->
     <div class="config-card">
       <h3>Aparência</h3>
-      <div class="custom-checkbox">
-        <label>
-          <input type="radio" name="tema" value="light" [(ngModel)]="temaSelecionado" (change)="onTemaChange('light')" />
-          <span class="checkmark"></span>
-          Claro
-        </label>
-      </div>
-      <div class="custom-checkbox">
-        <label>
-          <input type="radio" name="tema" value="dark" [(ngModel)]="temaSelecionado" (change)="onTemaChange('dark')" />
-          <span class="checkmark"></span>
-          Escuro
-        </label>
-      </div>
+      <label class="checkbox-wrapper">
+        <input type="radio" name="tema" (change)="alterarTema('claro')" [checked]="tema === 'claro'" />
+        <span class="custom-checkbox"></span>
+        Claro
+      </label>
+      <label class="checkbox-wrapper">
+        <input type="radio" name="tema" (change)="alterarTema('escuro')" [checked]="tema === 'escuro'" />
+        <span class="custom-checkbox"></span>
+        Escuro
+      </label>
     </div>
 
+    <!-- Preferências -->
     <div class="config-card">
-      <h3>Adicionar Novo Usuário</h3>
-      <div class="form-group">
-        <input type="text" placeholder="Nome" [(ngModel)]="novoUsuario.nome" />
-        <input type="email" placeholder="Email" [(ngModel)]="novoUsuario.email" />
-        <button (click)="adicionarUsuario()">Adicionar</button>
-      </div>
+      <h3>Preferências</h3>
+      <label class="checkbox-wrapper">
+        <input type="checkbox" [(ngModel)]="animacoes" />
+        <span class="custom-checkbox"></span>
+        Ativar animações de transição
+      </label>
+      <label class="checkbox-wrapper">
+        <input type="checkbox" [(ngModel)]="alertasSistema" />
+        <span class="custom-checkbox"></span>
+        Exibir alertas de sistema
+      </label>
     </div>
+
+    <!-- Experiência -->
+    <div class="config-card">
+      <h3>Experiência</h3>
+      <label class="checkbox-wrapper">
+        <input type="checkbox" [(ngModel)]="mostrarTooltips" />
+        <span class="custom-checkbox"></span>
+        Mostrar dicas ao passar o mouse
+      </label>
+      <label class="checkbox-wrapper">
+        <input type="checkbox" [(ngModel)]="confirmacoesRapidas" />
+        <span class="custom-checkbox"></span>
+        Confirmar ações automaticamente
+      </label>
+    </div>
+
   </div>
 </div>
