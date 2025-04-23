@@ -5,7 +5,7 @@
 
 .left-panel {
   flex: 1;
-  background: linear-gradient(to bottom, #4299e1, #2b6cb0);
+  background: linear-gradient(to bottom, #60a5fa, #4f46e5); /* Azul claro → azul escuro */
   color: white;
   display: flex;
   flex-direction: column;

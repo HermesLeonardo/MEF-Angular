@@ -1,15 +1,30 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { LoginRoutingModule } from './login-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { RegisterComponent } from './page/register/register.component';
 import { LoginComponent } from './page/login/login.component';
 
+// Angular Material
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+
+
+
 @NgModule({
+  declarations: [
+    RegisterComponent,
+    LoginComponent
+  ],
   imports: [
     CommonModule,
-    FormsModule,
-    LoginRoutingModule,
-    LoginComponent
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule
   ]
 })
-export class LoginModule { }
+export class LoginModule {}
