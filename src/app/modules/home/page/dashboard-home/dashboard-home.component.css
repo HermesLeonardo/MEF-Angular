@@ -1,63 +1,128 @@
 .dashboard-container {
-    display: flex;
-    min-height: 100vh;
-    background-color: #121212;
-    color: #fff;
-    margin-left: 50px;
-  }
-  
-  .main-content {
-    flex: 1;
-    margin-left: 250px;
-    padding: 1rem 2rem;
-  }
-  
-  .dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #1f1f1f;
-    padding: 1rem;
-    border-bottom: 1px solid #333;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  
-  .notification-button {
-    background: none;
-    border: none;
-    position: relative;
-    color: #ddd;
-    cursor: pointer;
-  }
-  
-  .notification-dot {
-    position: absolute;
-    top: -4px;
-    right: -4px;
-    background: red;
-    color: white;
-    font-size: 10px;
-    border-radius: 50%;
-    padding: 2px 5px;
-  }
-  
-  .dashboard-header-actions {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-  
-  .companies-section h2,
-  .files-section h2 {
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
-  }
-  
-  .company-grid {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  }
-  
+  display: flex;
+  min-height: 100vh;
+  background-color: #0f172a;
+  color: #fff;
+  margin-left: 50px;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 250px;
+  padding: 1rem 2rem;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1f2937;
+  padding: 1rem;
+  border-bottom: 1px solid #334155;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.search-input {
+  background-color: #334155;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  color: white;
+  width: 250px;
+}
+
+.dashboard-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.notification-button {
+  background: none;
+  border: none;
+  position: relative;
+  color: #ddd;
+  cursor: pointer;
+}
+
+.notification-dot {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  border-radius: 50%;
+  padding: 2px 5px;
+}
+
+.btn-primary {
+  background-color: #3b82f6;
+  border: none;
+  padding: 0.5rem 1rem;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+.company-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.files-section {
+  margin-top: 2rem;
+}
+
+.search-files {
+  margin-bottom: 1rem;
+  background-color: #334155;
+  border: none;
+  padding: 0.5rem;
+  color: white;
+  border-radius: 8px;
+  width: 250px;
+}
+
+.files-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.files-table th,
+.files-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #334155;
+  text-align: left;
+}
+
+.status {
+  font-weight: bold;
+}
+
+.status.ativo {
+  color: #22c55e;
+}
+
+.status.inativo {
+  color: #f87171;
+}
