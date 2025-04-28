@@ -4,28 +4,31 @@
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
       <h2>CADASTRO</h2>
       <p>Comece aqui!</p>
-
       <mat-form-field appearance="outline">
         <mat-icon matPrefix>email</mat-icon>
         <input matInput type="email" placeholder="Email" formControlName="email" />
+        <mat-error *ngIf="getErroCampo('email')">{{ getErroCampo('email') }}</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-icon matPrefix>lock</mat-icon>
         <input matInput type="password" placeholder="Senha" formControlName="senha" />
+        <mat-error *ngIf="getErroCampo('senha')">{{ getErroCampo('senha') }}</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-icon matPrefix>lock</mat-icon>
         <input matInput type="password" placeholder="Confirmar senha" formControlName="confirmarSenha" />
+        <mat-error *ngIf="getErroCampo('confirmarSenha')">{{ getErroCampo('confirmarSenha') }}</mat-error>
       </mat-form-field>
+
 
       <p class="terms">
         Ao criar uma conta, você concorda com nossos
         <a href="#">Termos de Uso</a> e <a href="#">Políticas de Privacidade</a>
       </p>
 
-      <button mat-raised-button color="primary" type="submit" class="btn-submit">CRIAR</button>
+      <button type="submit" class="btn-submit">CRIAR</button>
     </form>
   </div>
 

@@ -1,0 +1,61 @@
+.card {
+    background-color: #1e293b; /* tom escuro */
+    color: #f1f5f9; /* texto claro */
+    border-radius: 12px;
+    padding: 16px;
+    width: 280px;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    margin-bottom: 12px;
+  }
+  
+  .card-title {
+    font-weight: 500;
+  }
+  
+  .options-button {
+    background: none;
+    border: none;
+    color: #cbd5e1;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  .card-body {
+    text-align: left;
+    margin-bottom: 16px;
+  }
+  
+  .number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    display: block;
+  }
+  
+  .label {
+    font-size: 1rem;
+    color: #94a3b8;
+  }
+  
+  .card-footer {
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;
+    color: #94a3b8;
+  }
+  
+  .clock-icon {
+    font-size: 1rem;
+    margin-right: 6px;
+  }
+  

@@ -1,119 +1,82 @@
-:host {
-  display: block;
-  height: 100%;
-  background-color: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  box-sizing: border-box;
-}
-
 .config-layout {
   display: flex;
+  background-color: var(--bg-color);
+  min-height: 100vh;
+  color: var(--text-color);
+  margin-left: 45px;
 }
 
-.config-wrapper {
+app-sidebar {
+  flex: 0 0 250px;
+  height: 100vh;
+}
+
+.config-content {
   flex: 1;
   padding: 2rem;
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-h2 {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-}
-
+/* CARD COM A MESMA ESTÉTICA DA TELA DE PERFIL */
 .config-card {
-  background-color: var(--card);
-  padding: 1.5rem;
+  background-color: var(--card-bg);
   border-radius: 12px;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
 }
 
-h3 {
+.config-card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
   margin-bottom: 1rem;
 }
 
-.custom-checkbox {
-  margin: 0.8rem 0;
-}
-
-.custom-checkbox input[type="checkbox"],
-.custom-checkbox input[type="radio"] {
-  opacity: 0;
-  position: absolute;
-}
-
-.custom-checkbox label {
-  position: relative;
-  padding-left: 2rem;
-  cursor: pointer;
-  user-select: none;
+/* CHECKBOX ESTILIZADA */
+.checkbox-wrapper {
   display: flex;
   align-items: center;
+  gap: 0.6rem;
+  margin: 0.8rem 0;
+  cursor: pointer;
+  font-size: 0.95rem;
+  position: relative;
+  color: var(--text-color);
 }
 
-.custom-checkbox .checkmark {
+.checkbox-wrapper input {
+  opacity: 0;
   position: absolute;
-  left: 0;
-  height: 20px;
-  width: 20px;
-  background-color: #2a2e3b;
-  border: 1px solid #555;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.custom-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--text-color);
+  background-color: transparent;
   border-radius: 4px;
+  display: inline-block;
+  position: relative;
+  transition: all 0.2s ease;
 }
 
-.custom-checkbox input:checked + .checkmark {
-  background-color: #3f51b5;
-  border-color: #3f51b5;
+.checkbox-wrapper input:checked + .custom-checkbox {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
 }
 
-.custom-checkbox .checkmark:after {
-  content: "";
+.checkbox-wrapper input:checked + .custom-checkbox::after {
+  content: '';
   position: absolute;
-  display: none;
-  left: 6px;
   top: 2px;
-  width: 5px;
-  height: 10px;
+  left: 5px;
+  width: 4px;
+  height: 9px;
   border: solid white;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
-}
-
-.custom-checkbox input:checked + .checkmark:after {
-  display: block;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-
-input[type="text"],
-input[type="email"] {
-  padding: 0.5rem;
-  border-radius: 6px;
-  border: none;
-  background: #fff;
-  color: #000;
-}
-
-button {
-  padding: 0.6rem;
-  background-color: #3f51b5;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #5c6bc0;
-}
-
-.config-layout {
-  display: flex;
-  min-height: 100vh;
 }
