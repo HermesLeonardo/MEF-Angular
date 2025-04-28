@@ -86,6 +86,6 @@ export class DashboardHomeComponent {
   }
 
   goToCompany(id: number) {
-    this.router.navigate(['/company', id]);
+    this.router.navigate(['/file-upload', id]);
   }
 }
