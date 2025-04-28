@@ -76,8 +76,8 @@
     transition: all 0.2s ease;
     border: none;
   
-    &.download-btn { background: var(--primary-color); }
-    &.preview-btn { background: var(--accent-color); }
+    &.download-btn { background: var(); }
+    &.preview-btn { background: var(); }
   
     &:hover {
       filter: brightness(0.95);
