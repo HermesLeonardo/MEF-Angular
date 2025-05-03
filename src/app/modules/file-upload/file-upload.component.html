@@ -1,0 +1,105 @@
+<div class="container">
+  <app-sidebar></app-sidebar>
+
+    <h2>Upload Documents</h2>
+  
+    <!-- Upload Section -->
+    <div class="upload-section">
+      <input type="file" multiple #fileInput (change)="onFileSelect($event)" hidden>
+      <button mat-raised-button color="primary" (click)="fileInput.click()">
+        <mat-icon>upload</mat-icon> Select Files
+      </button>
+  
+      <!-- Selected Files List -->
+      <div class="selected-files" *ngIf="selectedFiles.length">
+        <div class="file-item" *ngFor="let file of selectedFiles">
+          <span class="file-name">{{ file.name }}</span>
+          <mat-form-field>
+            <mat-label>Category</mat-label>
+            <mat-select [(value)]="file.category">
+              <mat-option *ngFor="let category of categories" [value]="category">
+                {{ category }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <button mat-raised-button color="accent" (click)="uploadFiles()">
+          Upload All
+        </button>
+      </div>
+    </div>
+  
+    <!-- Uploaded Files Table with Header Filters -->
+    <table mat-table [dataSource]="dataSource" matSort class="files-table">
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <div class="header-filter">
+            File Name
+            <input (input)="applyNameFilter($event)" placeholder="Filter...">
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element"> {{ element.name }} </td>
+      </ng-container>
+  
+      <!-- Type Column -->
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <div class="header-filter">
+            Type
+            <input (input)="applyTypeFilter($event)" placeholder="Filter...">
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element"> {{ element.type }} </td>
+      </ng-container>
+  
+      <!-- Date Column -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <div class="header-filter">
+            Date Uploaded
+            <input type="date" (change)="applyDateFilter($event)">
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element"> {{ element.date | date }} </td>
+      </ng-container>
+  
+      <!-- Size Column -->
+      <ng-container matColumnDef="size">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <div class="header-filter">
+            Size
+            <select (change)="applySizeFilter($event)">
+              <option value="">All</option>
+              <option value="small">&lt; 1MB</option>
+              <option value="medium">1-5MB</option>
+            </select>
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element"> {{ element.size }} </td>
+      </ng-container>
+  
+      <!-- Category Column -->
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <div class="header-filter">
+            Category
+            <input (input)="applyCategoryFilter($event)" placeholder="Filter...">
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element"> {{ element.category || 'Uncategorized' }} </td>
+      </ng-container>
+  
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let element">
+          <button class="action-btn download-btn" (click)="downloadFile(element)">Download</button>
+          <button class="action-btn preview-btn" (click)="previewFile(element)">Preview</button>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>

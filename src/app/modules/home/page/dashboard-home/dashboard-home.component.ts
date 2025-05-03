@@ -114,6 +114,6 @@ export class DashboardHomeComponent implements OnInit {
   }
 
   goToCompany(id: number) {
-    this.router.navigate(['/company', id]);
+    this.router.navigate(['/file-upload', id]);
   }
 }
