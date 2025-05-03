@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { EmpresaModalComponent } from '../../../../shared/components/empresa-modal/empresa-modal.component';
+import { EmpresaService } from '../../../../core/services/empresa.service';
 
 type CompanyType = 'company' | 'client';
 
@@ -9,6 +12,10 @@ interface Company {
   employeeCount: number;
   lastUpdate: string;
   type: CompanyType;
+  cnpj?: string;
+  email?: string;
+  telefone?: string;
+  responsavel?: string;
 }
 
 interface FileItem {
@@ -25,8 +32,8 @@ interface FileItem {
   styleUrls: ['./dashboard-home.component.css'],
   standalone: false,
 })
-export class DashboardHomeComponent {
-  constructor(private router: Router) {}
+export class DashboardHomeComponent implements OnInit {
+  constructor(private router: Router, private dialog: MatDialog, private empresaService: EmpresaService) {}
 
   searchQuery = '';
   searchFile = '';
@@ -34,14 +41,22 @@ export class DashboardHomeComponent {
   currentPage = 1;
   itemsPerPage = 6;
 
-  companies: Company[] = [
-    { id: 1, name: 'Empresa 1', employeeCount: 83, lastUpdate: '27/03/2025', type: 'company' },
-    { id: 2, name: 'Cliente 2', employeeCount: 3, lastUpdate: '13/09/2024', type: 'client' },
-    { id: 3, name: 'Empresa 3', employeeCount: 32, lastUpdate: '13/09/2024', type: 'company' },
-    { id: 4, name: 'Cliente 4', employeeCount: 83, lastUpdate: '13/09/2024', type: 'client' },
-    { id: 5, name: 'Empresa 6', employeeCount: 83, lastUpdate: '13/09/2024', type: 'company' },
-    { id: 6, name: 'Cliente 10', employeeCount: 0, lastUpdate: '13/09/2024', type: 'client' },
-  ];
+  companies: Company[] = [];
+  ngOnInit(): void {
+    this.empresaService.empresas$.subscribe(empresas => {
+      this.companies = empresas.map(empresa => ({
+        id: (empresa as any).id || 0, // Ensure a default value if 'id' is missing
+        name: empresa.nome,
+        employeeCount: empresa.employeeCount || 0,
+        lastUpdate: new Date().toLocaleDateString(),
+        type: empresa.type || 'company',
+        cnpj: empresa.cnpj,
+        email: empresa.email,
+        telefone: empresa.telefone,
+        responsavel: empresa.responsavel,
+      }));
+    });
+  }
 
   files: FileItem[] = [
     { name: 'bucetinha.pdf', destination: 'Empresa 7', size: '3.1 MB', date: '27/03/2025', status: 'Ativo' },
@@ -82,7 +97,20 @@ export class DashboardHomeComponent {
   }
 
   openAddCompanyModal() {
-    alert('Abrir modal de nova empresa (em breve)');
+    const dialogRef = this.dialog.open(EmpresaModalComponent, {
+      width: '500px',
+      panelClass: 'custom-dialog-container'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Empresa cadastrada:', result);
+        this.empresaService.adicionarEmpresa(result); // <- importante
+    
+        // Vai para a última página automaticamente
+        this.currentPage = this.totalPages;
+      }
+    });
   }
 
   goToCompany(id: number) {

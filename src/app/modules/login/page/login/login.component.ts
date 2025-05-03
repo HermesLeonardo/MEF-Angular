@@ -9,14 +9,14 @@ import { Router } from '@angular/router';
 
 })
 export class LoginComponent {
-  cpfCnpj: string = '';
+  email: string = '';
   senha: string = '';
   isLoading: boolean = false;
 
   constructor(private router: Router) {}
 
-  onSubmit(cpfCnpj: string, senha: string) {
-    if (!cpfCnpj || !senha) {
+  onSubmit(email: string, senha: string) {
+    if (!email || !senha) {
       alert('Preencha todos os campos');
       return;
     }

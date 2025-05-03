@@ -10,3 +10,9 @@
     padding: 1rem;
   }
   
+  .custom-dialog-container .mat-dialog-container {
+    background-color: #1f2937;
+    color: white;
+    border-radius: 12px;
+    padding: 0;
+  }
