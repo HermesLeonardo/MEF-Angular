@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
+import { LoginRoutingModule } from './login-routing.module';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
     LoginComponent
   ],
   imports: [
+    LoginRoutingModule,
     CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
