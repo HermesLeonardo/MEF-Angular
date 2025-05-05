@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserDataService } from '../../../core/services/user-data.service';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
 
 @Component({
   standalone: false,
@@ -18,17 +18,22 @@ export class SidebarComponent implements OnInit {
   constructor(
     private userDataService: UserDataService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.userDataService.user$.subscribe(user => {
       this.nome = user.nome;
       this.email = user.email;
-      this.avatarUrl = user.avatarUrl;
     });
   }
 
   goTo(path: string): void {
     this.router.navigate([path]);
   }
+
+  logout(): void {
+    localStorage.removeItem('usuario');
+    this.router.navigate(['/login']);
+  }
+
 }

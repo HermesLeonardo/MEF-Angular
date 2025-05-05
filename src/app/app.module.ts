@@ -19,6 +19,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 
 
@@ -43,9 +47,12 @@ import { MatTableModule } from '@angular/material/table';
     MatOptionModule,
     MatSelectModule,
     MatTableModule,
+    MatSnackBarModule,
 
     LoginModule,
     FileUploadModule,
+
+    HttpClientModule,
 
   ],
   bootstrap: [AppComponent]

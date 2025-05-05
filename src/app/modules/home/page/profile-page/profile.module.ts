@@ -9,7 +9,10 @@ import { SharedModule } from '../../../../shared/shared.module';
   imports: [
     CommonModule,
     FormsModule,
-    SharedModule,],
+    SharedModule,
+  
+  
+  ],
   exports: [ProfileComponent],
 })
 export class ProfilePageModule {}
