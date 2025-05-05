@@ -13,3 +13,40 @@ body {
   padding: 0;
   font-family: 'Segoe UI', sans-serif;
 }
+
+::ng-deep .mat-snack-bar-container.mat-warn {
+  background-color: #e53935;
+  color: #fff;
+  font-weight: bold;
+}
+
+
+body.escuro {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --text-color: #ffffff;
+  --input-bg: #334155;
+  --card-shadow: rgba(0, 0, 0, 0.4);
+}
+
+body.claro {
+  --bg-primary: #f9fafb;
+  --bg-secondary: #ffffff;
+  --text-color: #0f172a;
+  --input-bg: #e2e8f0;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+}
+/* Snackbar styles */
+
+.snackbar-success {
+  background-color: #4caf50 !important;
+  color: white;
+}
+.snackbar-error {
+  background-color: #f44336 !important;
+  color: white;
+}
+.snackbar-info {
+  background-color: #2196f3 !important;
+  color: white;
+}

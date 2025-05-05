@@ -7,13 +7,13 @@
   </div>
 
   <div class="right-panel">
-    <form (ngSubmit)="onSubmit(cpfCnpjInput.value, senhaInput.value)" class="login-form">
+    <form (ngSubmit)="onSubmit(emailInput.value, senhaInput.value)" class="login-form">
       <h2>LOGIN</h2>
       <p>Bem-vindo de volta!</p>
 
       <div class="input-group">
-        <label for="cpfCnpj">CPF/CNPJ</label>
-        <input #cpfCnpjInput name="cpfCnpj" required placeholder="Digite seu CPF ou CNPJ" />
+        <label for="email">Email Sua Puta</label>
+        <input #emailInput name="email" required placeholder="Digite seu e-mail" />
       </div>
 
       <div class="input-group">
@@ -32,7 +32,6 @@
       <p class="register-link">
         Ainda não possui uma conta? <a href="/register">Cadastre-se</a>
       </p>
-      
     </form>
   </div>
 </div>

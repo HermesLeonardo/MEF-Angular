@@ -11,25 +11,27 @@
         <div class="email">{{ email }}</div>
       </div>
 
-      <i class="pi pi-external-link"></i>
+      <button class="logout-button" (click)="logout()" title="Sair">
+        <i class="pi pi-sign-out"></i>
+      </button>
     </div>
+
+
+    <nav class="sidebar-menu">
+      <button (click)="goTo('/home')">
+        <i class="pi pi-home"></i>
+        <span>Home</span>
+      </button>
+
+      <button (click)="goTo('/profile')">
+        <i class="pi pi-user"></i>
+        <span>Perfil</span>
+      </button>
+
+      <button (click)="goTo('/configurations')">
+        <i class="pi pi-cog"></i>
+        <span>Configurações</span>
+      </button>
+    </nav>
+
   </div>
-
-  <nav class="sidebar-menu">
-    <button (click)="goTo('/home')">
-      <i class="pi pi-home"></i>
-      <span>Home</span>
-    </button>
-
-    <button (click)="goTo('/profile')">
-      <i class="pi pi-user"></i>
-      <span>Perfil</span>
-    </button>
-
-    <button (click)="goTo('/configurations')">
-      <i class="pi pi-cog"></i>
-      <span>Configurações</span>
-    </button>
-  </nav>
-
-</div>

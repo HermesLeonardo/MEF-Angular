@@ -8,7 +8,7 @@
         <h2>Meu Perfil</h2>
         <div class="header-buttons">
           <button class="btn-save" *ngIf="editando" (click)="salvar()">Salvar</button>
-          <button class="btn-cancel" (click)="editando = !editando">
+          <button class="btn-cancel" (click)="alternarEdicao()">
             {{ editando ? 'Cancelar' : 'Editar' }}
           </button>
         </div>
@@ -17,20 +17,22 @@
       <div class="info-row">
         <div class="avatar">
           <img *ngIf="fotoPreviewUrl" [src]="fotoPreviewUrl" alt="Foto do usuário" />
-          <span *ngIf="!fotoPreviewUrl">{{ obterIniciais(usuario.nome) }}</span>
+          <span *ngIf="!fotoPreviewUrl">{{ obterIniciais(usuario.name) }}</span>
         </div>
         <div class="info-text">
           <div *ngIf="!editando">
-            <strong>{{ usuario.nome }}</strong>
-            <div>{{ usuario.cargo }}</div>
+            <strong>{{ usuario.name || 'N/A' }}</strong>
+            <div>{{ usuario.role || 'N/A' }}</div>
           </div>
-          <input *ngIf="editando" [(ngModel)]="usuario.nome" placeholder="Nome completo" />
-          <input *ngIf="editando" [(ngModel)]="usuario.cargo" placeholder="Cargo" />
+          <div *ngIf="editando">
+            <input [(ngModel)]="usuario.name" placeholder="Nome completo" />
+            <input [(ngModel)]="usuario.role" placeholder="Cargo" />
+          </div>
         </div>
       </div>
 
       <div class="info-row" *ngIf="!editando">
-        <i class="pi pi-envelope"></i> {{ usuario.email }}
+        <i class="pi pi-envelope"></i> {{ usuario.email || 'N/A' }}
       </div>
       <div class="info-row" *ngIf="editando">
         <i class="pi pi-envelope"></i>
@@ -38,28 +40,23 @@
       </div>
 
       <div class="info-row" *ngIf="!editando">
-        <i class="pi pi-phone"></i> {{ usuario.telefone }}
+        <i class="pi pi-phone"></i> {{ usuario.telefone || 'N/A' }}
       </div>
       <div class="info-row" *ngIf="editando">
         <i class="pi pi-phone"></i>
-        <input [(ngModel)]="usuario.telefone" />
+        <input [(ngModel)]="usuario.telefone" placeholder="Telefone" />
       </div>
 
       <div class="info-row" *ngIf="!editando">
-        <i class="pi pi-id-card"></i> {{ usuario.cpfCnpj }}
+        <i class="pi pi-id-card"></i> {{ usuario.cpf || 'N/A' }}
       </div>
       <div class="info-row" *ngIf="editando">
         <i class="pi pi-id-card"></i>
-        <input [(ngModel)]="usuario.cpfCnpj" />
+        <input [(ngModel)]="usuario.cpf" placeholder="CPF" />
       </div>
 
-      <div class="info-row" *ngIf="!editando">
-        <i class="pi pi-building"></i> {{ usuario.empresa }}
-      </div>
-      <div class="info-row" *ngIf="editando">
-        <i class="pi pi-building"></i>
-        <input [(ngModel)]="usuario.empresa" />
-      </div>
+      <!-- Campo de empresa foi removido por não existir mais no model -->
+
     </div>
 
     <!-- Foto de perfil -->
@@ -68,7 +65,7 @@
       <div class="avatar-preview">
         <div class="avatar">
           <img *ngIf="fotoPreviewUrl" [src]="fotoPreviewUrl" alt="Foto do usuário" />
-          <span *ngIf="!fotoPreviewUrl">{{ obterIniciais(usuario.nome) }}</span>
+          <span *ngIf="!fotoPreviewUrl">{{ obterIniciais(usuario.name) }}</span>
         </div>
       </div>
       <div class="actions">
@@ -116,7 +113,9 @@
           <button class="btn-danger" [disabled]="!confirmarExclusao" (click)="excluirConta()">Excluir</button>
         </div>
 
-        <p *ngIf="tentouExcluirSemCheckbox" class="aviso">⚠ Marque a caixa para confirmar a exclusão.</p>
+        <p *ngIf="tentouExcluirSemCheckbox" class="aviso">
+          ⚠ Marque a caixa para confirmar a exclusão.
+        </p>
       </div>
     </div>
 

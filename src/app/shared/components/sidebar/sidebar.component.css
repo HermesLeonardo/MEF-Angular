@@ -3,7 +3,8 @@
   top: 0;
   left: 0;
   height: 100vh;
-  width: 280px; /* <-- AUMENTADO DE 250px PARA 280px */
+  width: 280px;
+  /* <-- AUMENTADO DE 250px PARA 280px */
   background-color: #1e293b;
   padding: 1rem;
   display: flex;
@@ -141,4 +142,19 @@
 .sidebar-menu button.active {
   background-color: #3b82f6;
   font-weight: bold;
+}
+
+
+.logout-button {
+  background: transparent;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  margin-left: auto;
+  font-size: 1.2rem;
+  transition: color 0.2s;
+}
+
+.logout-button:hover {
+  color: #fff;
 }

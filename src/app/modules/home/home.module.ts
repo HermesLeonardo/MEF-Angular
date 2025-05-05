@@ -6,16 +6,14 @@ import { DashboardHomeComponent } from './page/dashboard-home/dashboard-home.com
 import { SharedModule } from '../../shared/shared.module';
 
 import { ConfigPageComponent } from './page/config-page/config-page.component';
-import { ProfileComponent } from './page/profile-page/profile.component';
 import { HomeRoutingModule } from './home-routing.module';
 
 @NgModule({
-  declarations: [DashboardHomeComponent, ConfigPageComponent, ProfileComponent],
+  declarations: [DashboardHomeComponent, ConfigPageComponent],
   imports: [
     CommonModule,
     FormsModule,
     SharedModule,
-    // ProfilePageModule,
     HomeRoutingModule
   ],
   exports: [DashboardHomeComponent]
