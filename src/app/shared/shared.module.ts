@@ -12,15 +12,13 @@ import { FormsModule } from '@angular/forms';
     IconInputComponent,
     CustomButtonComponent,
     CompanyCardComponent,
-    SidebarComponent,
   ],
-  imports: [CommonModule,  FormsModule,],
+  imports: [CommonModule,],
   exports: [
     SidebarComponent,
     IconInputComponent,
     CustomButtonComponent,
     CompanyCardComponent,
-    SidebarComponent,  
     FormsModule,
   ]
 })

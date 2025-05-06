@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { DashboardHomeComponent } from './page/dashboard-home/dashboard-home.component';
 import { SharedModule } from '../../shared/shared.module';
 
+import { ProfilePageModule } from './page/profile-page/profile.module';
+
 import { ConfigPageComponent } from './page/config-page/config-page.component';
 import { HomeRoutingModule } from './home-routing.module';
 
@@ -14,7 +16,8 @@ import { HomeRoutingModule } from './home-routing.module';
     CommonModule,
     FormsModule,
     SharedModule,
-    HomeRoutingModule
+    HomeRoutingModule,
+    ProfilePageModule,
   ],
   exports: [DashboardHomeComponent]
 })
