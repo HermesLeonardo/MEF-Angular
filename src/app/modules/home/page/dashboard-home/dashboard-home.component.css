@@ -39,25 +39,6 @@
   gap: 1rem;
 }
 
-.notification-button {
-  background: none;
-  border: none;
-  position: relative;
-  color: #ddd;
-  cursor: pointer;
-}
-
-.notification-dot {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  background: red;
-  color: white;
-  font-size: 10px;
-  border-radius: 50%;
-  padding: 2px 5px;
-}
-
 .btn-primary {
   background-color: #3b82f6;
   border: none;
@@ -89,6 +70,20 @@
   margin-top: 1rem;
 }
 
+.pagination-button {
+  background-color: #60a5fa;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.pagination-button:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+}
+
 .files-section {
   margin-top: 2rem;
 }
@@ -115,14 +110,15 @@
   text-align: left;
 }
 
-.status {
+.status-indicator {
   font-weight: bold;
+  display: inline-block;
 }
 
-.status.ativo {
+.status-indicator.ativo {
   color: #22c55e;
 }
 
-.status.inativo {
-  color: #f87171;
+.status-indicator.inativo {
+  color: #ef4444;
 }
