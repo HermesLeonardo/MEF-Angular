@@ -3,7 +3,7 @@
     <div class="logo">MEF</div>
 
     <div class="user-card">
-      <div class="avatar" *ngIf="!avatarUrl">{{ nome.charAt(0) }}</div>
+      <div class="avatar" *ngIf="!avatarUrl">{{ nome.charAt(0) || '?' }}</div>
       <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar-img" />
 
       <div class="user-info">

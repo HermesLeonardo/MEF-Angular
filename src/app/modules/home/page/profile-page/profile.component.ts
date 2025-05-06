@@ -98,7 +98,7 @@ export class ProfileComponent implements OnInit {
     if (this.fotoSelecionada) {
       const formData = new FormData();
       formData.append('photo', this.fotoSelecionada);
-  
+
       this.profileService.uploadFoto(this.usuario.id, formData).subscribe({
         next: () => {
           this.mostrarMensagem('Foto atualizada com sucesso.', 'success');
@@ -112,7 +112,7 @@ export class ProfileComponent implements OnInit {
       this.atualizarDadosTextuais();
     }
   }
-  
+
   atualizarDadosTextuais() {
     const dadosAtualizados = {
       name: this.usuario.name,
@@ -120,10 +120,10 @@ export class ProfileComponent implements OnInit {
       telefone: this.usuario.telefone,
       cpf: this.usuario.cpf
     };
-  
+
     this.enviarAtualizacao(dadosAtualizados);
   }
-  
+
   private enviarAtualizacao(dadosAtualizados: Partial<Profile>) {
     this.profileService.atualizarUsuario(dadosAtualizados).subscribe({
       next: () => {
