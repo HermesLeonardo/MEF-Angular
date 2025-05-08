@@ -22,13 +22,13 @@ interface FileItem {
 }
 
 @Component({
+  standalone: false,
   selector: 'app-dashboard-home',
   templateUrl: './dashboard-home.component.html',
   styleUrls: ['./dashboard-home.component.css'],
-  standalone: false,
 })
 export class DashboardHomeComponent implements OnInit {
-  constructor(private router: Router, private companyService: CompanyService) { }
+  constructor(private router: Router, private companyService: CompanyService) {}
 
   searchQuery = '';
   searchFile = '';
@@ -37,16 +37,10 @@ export class DashboardHomeComponent implements OnInit {
   itemsPerPage = 6;
 
   companies: Company[] = [];
-  files: FileItem[] = [
-    { name: 'bucetinha.pdf', destination: 'Empresa 7', size: '3.1 MB', date: '27/03/2025', status: 'Ativo' },
-    { name: 'ghjkl.pdf', destination: 'Company 1', size: '1.6 MB', date: '27/03/2025', status: 'Ativo' },
-    { name: 'sdfghuiop.pdf', destination: 'Empresa 1', size: '4.2 MB', date: '27/03/2025', status: 'Ativo' },
-    { name: 'qualquer coisa.pdf', destination: 'Empresa 1', size: '1.2 MB', date: '27/03/2025', status: 'Ativo' },
-    { name: 'Relatório Mensal.pdf', destination: 'Empresa 1', size: '1.2 MB', date: '27/03/2025', status: 'Ativo' },
-    { name: 'Contratos 2024.docx', destination: 'Cliente 2', size: '0.8 MB', date: '13/09/2024', status: 'Inativo' },
-  ];
+  files: FileItem[] = [];
 
-  usuarioLogado: any; 
+  usuarioLogado: any;
+
   ngOnInit(): void {
     const data = localStorage.getItem('usuario');
     if (data) {
@@ -54,8 +48,8 @@ export class DashboardHomeComponent implements OnInit {
     }
 
     this.loadCompanies();
+    this.loadFiles(); // Aqui futuramente entra a chamada pro backend
   }
-
 
   loadCompanies(): void {
     this.companyService.getCompanies().subscribe({
@@ -64,8 +58,18 @@ export class DashboardHomeComponent implements OnInit {
       },
       error: (err) => {
         console.error('Erro ao buscar empresas', err);
-      }
+      },
     });
+  }
+
+  // Esta função está preparada para futura integração com o backend
+  loadFiles(): void {
+    this.files = [
+      { name: 'Relatório Financeiro.pdf', destination: 'Empresa X', size: '2.5 MB', date: '03/05/2025', status: 'Ativo' },
+      { name: 'Contrato Assinado.docx', destination: 'Cliente Y', size: '1.3 MB', date: '02/05/2025', status: 'Inativo' },
+    ];
+    // Quando o backend estiver pronto:
+    // this.fileService.getRecentFiles().subscribe(data => this.files = data);
   }
 
   get totalPages(): number {
@@ -80,7 +84,7 @@ export class DashboardHomeComponent implements OnInit {
         name: c.name,
         employeeCount: c.funci_quanti || 0,
         lastUpdate: c.created_at,
-        type: 'company' as CompanyType
+        type: 'company' as CompanyType,
       }));
   }
 

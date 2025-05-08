@@ -40,9 +40,9 @@
         </div>
 
         <div class="pagination-controls">
-          <button (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+          <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
           <span>{{ currentPage }}/{{ totalPages }}</span>
-          <button (click)="nextPage()" [disabled]="currentPage === totalPages">Próximo</button>
+          <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages">Próximo</button>
         </div>
       </section>
 
@@ -71,8 +71,13 @@
               <td>{{ file.destination }}</td>
               <td>{{ file.size }}</td>
               <td>{{ file.date }}</td>
-              <td [ngClass]="{ ativo: file.status === 'Ativo', inativo: file.status !== 'Ativo' }">
-                ● {{ file.status }}
+              <td>
+                <span
+                  class="status-indicator"
+                  [ngClass]="{ ativo: file.status === 'Ativo', inativo: file.status !== 'Ativo' }"
+                >
+                  ● {{ file.status }}
+                </span>
               </td>
             </tr>
           </tbody>
