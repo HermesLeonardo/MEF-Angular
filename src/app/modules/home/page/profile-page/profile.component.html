@@ -31,24 +31,30 @@
         </div>
       </div>
 
+      <!-- E-mail -->
       <div class="info-row" *ngIf="!editando">
-        <i class="pi pi-envelope"></i> {{ usuario.email || 'N/A' }}
+        <i class="pi pi-envelope"></i>
+        <span><strong>E-mail:</strong> {{ usuario.email || 'N/A' }}</span>
       </div>
       <div class="info-row" *ngIf="editando">
         <i class="pi pi-envelope"></i>
         <input [(ngModel)]="usuario.email" />
       </div>
 
+      <!-- Telefone -->
       <div class="info-row" *ngIf="!editando">
-        <i class="pi pi-phone"></i> {{ usuario.telefone || 'N/A' }}
+        <i class="pi pi-phone"></i>
+        <span><strong>Telefone:</strong> {{ usuario.telefone || 'N/A' }}</span>
       </div>
       <div class="info-row" *ngIf="editando">
         <i class="pi pi-phone"></i>
         <input [(ngModel)]="usuario.telefone" placeholder="Telefone" />
       </div>
 
+      <!-- CPF -->
       <div class="info-row" *ngIf="!editando">
-        <i class="pi pi-id-card"></i> {{ usuario.cpf || 'N/A' }}
+        <i class="pi pi-id-card"></i>
+        <span><strong>CPF:</strong> {{ usuario.cpf || 'N/A' }}</span>
       </div>
       <div class="info-row" *ngIf="editando">
         <i class="pi pi-id-card"></i>
@@ -71,9 +77,12 @@
       <div class="actions">
         <button class="btn-secondary" (click)="removerFoto()">Remover</button>
         <button class="btn-secondary" (click)="abrirUploadFoto()">Alterar</button>
+        <button *ngIf="fotoSelecionada" class="btn-save" (click)="salvarFoto()">Salvar Foto</button>
+
         <input type="file" id="inputFoto" hidden accept="image/*" (change)="selecionarFoto($event)" />
       </div>
     </div>
+
 
     <!-- Segurança -->
     <div class="security-section">

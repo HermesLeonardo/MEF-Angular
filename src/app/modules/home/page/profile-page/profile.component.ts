@@ -54,13 +54,26 @@ export class ProfileComponent implements OnInit {
         };
 
         console.log('this.usuario populado:', this.usuario);
+
+        // Requisição separada para a foto, mantendo lógica atual
+        if (this.usuario.photo) {
+          this.profileService.getFoto(this.usuario.id).subscribe({
+            next: (blob) => {
+              const url = URL.createObjectURL(blob);
+              this.fotoPreviewUrl = this.sanitizer.bypassSecurityTrustUrl(url);
+            },
+            error: () => {
+              console.warn('⚠️ Falha ao carregar a imagem do usuário.');
+            }
+          });
+        }
       },
       error: (err) => {
         console.error('Erro ao carregar dados do usuário:', err);
       }
     });
-
   }
+
 
 
 
@@ -112,6 +125,27 @@ export class ProfileComponent implements OnInit {
       this.atualizarDadosTextuais();
     }
   }
+
+  salvarFoto() {
+    if (this.fotoSelecionada) {
+      const formData = new FormData();
+      formData.append('photo', this.fotoSelecionada);
+
+      this.profileService.uploadFoto(this.usuario.id, formData).subscribe({
+        next: () => {
+          this.mostrarMensagem('Foto atualizada com sucesso.', 'success');
+          this.fotoSelecionada = null;
+          this.carregarUsuario();
+        },
+        error: () => {
+          this.mostrarMensagem('Erro ao atualizar a foto.', 'error');
+        }
+      });
+    }
+  }
+
+
+
 
   atualizarDadosTextuais() {
     const dadosAtualizados = {

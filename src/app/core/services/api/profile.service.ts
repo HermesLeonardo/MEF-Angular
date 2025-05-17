@@ -10,7 +10,7 @@ import { Usuario } from '../../models/usuario.model';
 export class ProfileService {
   private baseUrl = 'http://localhost:3000/users';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private getUserId(): number | null {
     const data = localStorage.getItem('usuario');
@@ -50,5 +50,13 @@ export class ProfileService {
   uploadFoto(id: number, formData: FormData): Observable<any> {
     return this.http.post(`${this.baseUrl}/${id}/photo`, formData);
   }
-  
+  cadastrarUsuario(formData: FormData): Observable<any> {
+    return this.http.post(`${this.baseUrl}/register`, formData);
+  }
+  getFoto(id: number): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/${id}/photo`, { responseType: 'blob' });
+  }
+
+
+
 }
