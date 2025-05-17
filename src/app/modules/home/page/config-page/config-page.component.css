@@ -64,12 +64,12 @@ app-sidebar {
   transition: all 0.2s ease;
 }
 
-.checkbox-wrapper input:checked + .custom-checkbox {
+.checkbox-wrapper input:checked+.custom-checkbox {
   background-color: #3b82f6;
   border-color: #3b82f6;
 }
 
-.checkbox-wrapper input:checked + .custom-checkbox::after {
+.checkbox-wrapper input:checked+.custom-checkbox::after {
   content: '';
   position: absolute;
   top: 2px;
@@ -79,4 +79,62 @@ app-sidebar {
   border: solid white;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
+}
+
+
+
+
+
+/* Estilo padrão para inputs do cadastro */
+.input-padrao {
+  width: 100%;
+  padding: 0.6rem;
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-padrao:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+/* Erro de validação (input inválido e tocado) */
+.input-padrao.ng-invalid.ng-touched {
+  border-color: #be123c;
+}
+
+/* Mensagem de erro */
+mat-error {
+  color: #be123c !important;
+  font-size: 0.85rem;
+  margin-top: -0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.btn-save {
+  width: 100%;
+  background-color: #3b82f6; /* Azul primário */
+  color: #ffffff;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-save:hover {
+  background-color: #2563eb; /* Azul mais escuro no hover */
+  transform: translateY(-1px);
+}
+
+.btn-save:active {
+  background-color: #1d4ed8; /* Azul mais escuro no click */
+  transform: scale(0.98);
 }

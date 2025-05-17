@@ -10,6 +10,13 @@ import { ProfilePageModule } from './page/profile-page/profile.module';
 import { ConfigPageComponent } from './page/config-page/config-page.component';
 import { HomeRoutingModule } from './home-routing.module';
 
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+
 @NgModule({
   declarations: [DashboardHomeComponent, ConfigPageComponent],
   imports: [
@@ -18,7 +25,15 @@ import { HomeRoutingModule } from './home-routing.module';
     SharedModule,
     HomeRoutingModule,
     ProfilePageModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSnackBarModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    NgxMaskDirective,
+
   ],
+  providers: [provideNgxMask()],
   exports: [DashboardHomeComponent]
 })
-export class HomeModule {}
+export class HomeModule { }
