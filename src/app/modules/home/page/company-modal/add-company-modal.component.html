@@ -1,0 +1,39 @@
+<div class="modal-overlay">
+  <div class="modal-content">
+    <h2>Nova Empresa/Cliente</h2>
+
+    <div class="switch-type">
+      <button [class.active]="selectedType === 'cpf'" (click)="setType('cpf')">CPF</button>
+      <button [class.active]="selectedType === 'cnpj'" (click)="setType('cnpj')">CNPJ</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <label>Nome da empresa</label>
+      <input formControlName="name" />
+
+      <label>{{ selectedType.toUpperCase() }}</label>
+      <input formControlName="document" />
+
+      <label>E-mail de contato</label>
+      <input formControlName="email" />
+
+      <label>Telefone</label>
+      <input formControlName="phone" />
+
+      <label>Nome do responsável</label>
+      <input formControlName="responsible" />
+
+      <label>Endereço</label>
+      <input formControlName="address" />
+
+      <label>Quantidade de funcionários</label>
+      <input type="number" formControlName="funci_quanti" />
+
+
+      <div class="actions">
+        <button type="submit" class="btn-save">Cadastrar</button>
+        <button type="button" class="btn-cancel" (click)="close.emit()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

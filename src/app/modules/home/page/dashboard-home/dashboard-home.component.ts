@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Company } from '../../../../core/models/company.model';
 import { CompanyService } from '../../../../core/services/api/company.service';
+import { AddCompanyModalComponent } from '../company-modal/add-company-modal.component';
 
 type CompanyType = 'company' | 'client';
 
@@ -28,10 +29,12 @@ interface FileItem {
   styleUrls: ['./dashboard-home.component.css'],
 })
 export class DashboardHomeComponent implements OnInit {
-  constructor(private router: Router, private companyService: CompanyService) {}
+  constructor(private router: Router, private companyService: CompanyService) { }
 
   searchQuery = '';
   searchFile = '';
+
+  modalAberto = false;
 
   currentPage = 1;
   itemsPerPage = 6;
@@ -75,7 +78,6 @@ export class DashboardHomeComponent implements OnInit {
   get totalPages(): number {
     return Math.ceil(this.filteredCompaniesAll.length / this.itemsPerPage);
   }
-
   get filteredCompaniesAll(): FrontendCompany[] {
     return this.companies
       .filter(c => c.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
@@ -83,10 +85,11 @@ export class DashboardHomeComponent implements OnInit {
         id: c.id,
         name: c.name,
         employeeCount: c.funci_quanti || 0,
-        lastUpdate: c.created_at,
-        type: 'company' as CompanyType,
+        lastUpdate: c.updated_at || c.created_at, // ← usa updated_at se disponível
+        type: 'company' as CompanyType
       }));
   }
+
 
   get filteredCompanies(): FrontendCompany[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;
@@ -108,10 +111,21 @@ export class DashboardHomeComponent implements OnInit {
   }
 
   openAddCompanyModal() {
-    alert('Abrir modal de nova empresa (em breve)');
+    this.modalAberto = true;
   }
 
   goToCompany(id: number) {
     this.router.navigate(['/file-upload', id]);
   }
+
+  fecharModal() {
+    this.modalAberto = false;
+  }
+
+  atualizarLista() {
+    this.loadCompanies();
+  }
+
 }
+
+
