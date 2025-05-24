@@ -1,0 +1,43 @@
+<div class="register-wrapper">
+  <!-- Lado esquerdo: FORMULÁRIO -->
+  <div class="left-panel">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      <h2>CADASTRO</h2>
+      <p>Comece aqui!</p>
+      <mat-form-field appearance="outline">
+        <mat-icon matPrefix>email</mat-icon>
+        <input matInput type="email" placeholder="Email" formControlName="email" />
+        <mat-error *ngIf="getErroCampo('email')">{{ getErroCampo('email') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-icon matPrefix>lock</mat-icon>
+        <input matInput type="password" placeholder="Senha" formControlName="senha" />
+        <mat-error *ngIf="getErroCampo('senha')">{{ getErroCampo('senha') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-icon matPrefix>lock</mat-icon>
+        <input matInput type="password" placeholder="Confirmar senha" formControlName="confirmarSenha" />
+        <mat-error *ngIf="getErroCampo('confirmarSenha')">{{ getErroCampo('confirmarSenha') }}</mat-error>
+      </mat-form-field>
+
+
+      <p class="terms">
+        Ao criar uma conta, você concorda com nossos
+        <a href="#">Termos de Uso</a> e <a href="#">Políticas de Privacidade</a>
+      </p>
+
+      <button type="submit" class="btn-submit">CRIAR</button>
+    </form>
+  </div>
+
+  <!-- Lado direito: VISUAL AZUL -->
+  <div class="right-panel">
+    <div class="logo">MEF</div>
+    <h1>MEF</h1>
+    <p class="welcome-text">Bem-vindo de volta!</p>
+    <p>Já possui uma conta?</p>
+    <a href="/login" class="btn-secondary">Entrar</a>
+  </div>
+</div>

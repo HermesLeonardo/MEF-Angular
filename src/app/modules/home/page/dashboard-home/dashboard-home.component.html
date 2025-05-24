@@ -1,0 +1,77 @@
+<div class="dashboard-container">
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <!-- TOPO -->
+    <header class="dashboard-header">
+      <div class="welcome-message">
+        Olá, <strong>{{ usuarioLogado?.nome }}</strong> 👋
+      </div>
+
+      <input type="text" class="search-input" placeholder="Pesquisar..." [(ngModel)]="searchQuery" />
+
+      <div class="dashboard-header-actions">
+        <button class="btn-primary" (click)="openAddCompanyModal()">
+          <i class="pi pi-plus-circle"></i>
+          Nova Empresa
+        </button>
+      </div>
+    </header>
+
+    <!-- CORPO -->
+    <main class="dashboard-body">
+      <!-- Empresas e Clientes -->
+      <section class="companies-section">
+        <h2 class="section-title">Empresas</h2>
+        <div class="company-grid">
+          <app-company-card *ngFor="let company of filteredCompanies" [name]="company.name"
+            [employeeCount]="company.employeeCount" [lastUpdate]="company.lastUpdate" [type]="company.type"
+            (click)="goToCompany(company.id)"></app-company-card>
+        </div>
+
+        <div class="pagination-controls">
+          <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+          <span>{{ currentPage }}/{{ totalPages }}</span>
+          <button class="pagination-button" (click)="nextPage()"
+            [disabled]="currentPage === totalPages">Próximo</button>
+        </div>
+      </section>
+
+      <!-- Arquivos Recentes -->
+      <section class="files-section">
+        <h2 class="section-title">Arquivos Recentes</h2>
+        <input type="text" class="search-files" placeholder="Pesquisar arquivos..." [(ngModel)]="searchFile" />
+        <table class="files-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Destinatário</th>
+              <th>Tamanho</th>
+              <th>Data</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let file of filteredFiles">
+              <td>{{ file.name }}</td>
+              <td>{{ file.destination }}</td>
+              <td>{{ file.size }}</td>
+              <td>{{ file.date }}</td>
+              <td>
+                <span class="status-indicator"
+                  [ngClass]="{ ativo: file.status === 'Ativo', inativo: file.status !== 'Ativo' }">
+                  ● {{ file.status }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+  </div>
+
+  <app-add-company-modal *ngIf="modalAberto" (close)="fecharModal()"
+    (companyAdded)="atualizarLista()"></app-add-company-modal>
+
+</div>

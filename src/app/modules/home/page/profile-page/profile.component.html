@@ -1,0 +1,132 @@
+<div class="profile-layout">
+  <app-sidebar></app-sidebar>
+  <div class="profile-content">
+
+    <!-- Cartão de informações -->
+    <div class="profile-card">
+      <div class="profile-header">
+        <h2>Meu Perfil</h2>
+        <div class="header-buttons">
+          <button class="btn-save" *ngIf="editando" (click)="salvar()">Salvar</button>
+          <button class="btn-cancel" (click)="alternarEdicao()">
+            {{ editando ? 'Cancelar' : 'Editar' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="info-row">
+        <div class="avatar">
+          <img *ngIf="fotoPreviewUrl" [src]="fotoPreviewUrl" alt="Foto do usuário" />
+          <span *ngIf="!fotoPreviewUrl">{{ obterIniciais(usuario.name) }}</span>
+        </div>
+        <div class="info-text">
+          <div *ngIf="!editando">
+            <strong>{{ usuario.name || 'N/A' }}</strong>
+            <div>{{ usuario.role || 'N/A' }}</div>
+          </div>
+          <div *ngIf="editando">
+            <input [(ngModel)]="usuario.name" placeholder="Nome completo" />
+            <input [(ngModel)]="usuario.role" placeholder="Cargo" />
+          </div>
+        </div>
+      </div>
+
+      <!-- E-mail -->
+      <div class="info-row" *ngIf="!editando">
+        <i class="pi pi-envelope"></i>
+        <span><strong>E-mail:</strong> {{ usuario.email || 'N/A' }}</span>
+      </div>
+      <div class="info-row" *ngIf="editando">
+        <i class="pi pi-envelope"></i>
+        <input [(ngModel)]="usuario.email" />
+      </div>
+
+      <!-- Telefone -->
+      <div class="info-row" *ngIf="!editando">
+        <i class="pi pi-phone"></i>
+        <span><strong>Telefone:</strong> {{ usuario.telefone || 'N/A' }}</span>
+      </div>
+      <div class="info-row" *ngIf="editando">
+        <i class="pi pi-phone"></i>
+        <input [(ngModel)]="usuario.telefone" placeholder="Telefone" />
+      </div>
+
+      <!-- CPF -->
+      <div class="info-row" *ngIf="!editando">
+        <i class="pi pi-id-card"></i>
+        <span><strong>CPF:</strong> {{ usuario.cpf || 'N/A' }}</span>
+      </div>
+      <div class="info-row" *ngIf="editando">
+        <i class="pi pi-id-card"></i>
+        <input [(ngModel)]="usuario.cpf" placeholder="CPF" />
+      </div>
+
+      <!-- Campo de empresa foi removido por não existir mais no model -->
+
+    </div>
+
+    <!-- Foto de perfil -->
+    <div class="photo-section">
+      <h3>Foto de Perfil</h3>
+      <div class="avatar-preview">
+        <div class="avatar">
+          <img *ngIf="fotoPreviewUrl" [src]="fotoPreviewUrl" alt="Foto do usuário" />
+          <span *ngIf="!fotoPreviewUrl">{{ obterIniciais(usuario.name) }}</span>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn-secondary" (click)="removerFoto()">Remover</button>
+        <button class="btn-secondary" (click)="abrirUploadFoto()">Alterar</button>
+        <button *ngIf="fotoSelecionada" class="btn-save" (click)="salvarFoto()">Salvar Foto</button>
+
+        <input type="file" id="inputFoto" hidden accept="image/*" (change)="selecionarFoto($event)" />
+      </div>
+    </div>
+
+
+    <!-- Segurança -->
+    <div class="security-section">
+      <h3>Segurança</h3>
+      <label>Senha Atual</label>
+      <input type="password" [(ngModel)]="senhaAtual" />
+
+      <label>Nova Senha</label>
+      <input type="password" [(ngModel)]="novaSenha" />
+
+      <label>Confirmar Nova Senha</label>
+      <input type="password" [(ngModel)]="confirmarSenha" />
+
+      <button class="btn-save" (click)="atualizarSenha()">Atualizar Senha</button>
+    </div>
+
+    <!-- Excluir conta -->
+    <div class="delete-section">
+      <h3>Excluir Conta</h3>
+      <button class="btn-danger" (click)="abrirConfirmacao()">Excluir Conta</button>
+    </div>
+
+    <!-- Modal de confirmação -->
+    <div class="modal" *ngIf="exibindoConfirmacao">
+      <div class="modal-content">
+        <h3>Confirmar exclusão</h3>
+        <p>Tem certeza que deseja excluir sua conta? Essa ação é irreversível.</p>
+
+        <label class="custom-checkbox">
+          <input type="checkbox" [(ngModel)]="confirmarExclusao" />
+          <span class="checkmark"></span>
+          Confirmo que desejo excluir minha conta permanentemente.
+        </label>
+
+        <div class="modal-actions">
+          <button class="btn-cancel" (click)="fecharConfirmacao()">Cancelar</button>
+          <button class="btn-danger" [disabled]="!confirmarExclusao" (click)="excluirConta()">Excluir</button>
+        </div>
+
+        <p *ngIf="tentouExcluirSemCheckbox" class="aviso">
+          ⚠ Marque a caixa para confirmar a exclusão.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>

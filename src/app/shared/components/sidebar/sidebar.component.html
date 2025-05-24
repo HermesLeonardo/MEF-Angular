@@ -1,0 +1,38 @@
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">MEF</div>
+
+    <div class="user-card">
+      <div class="avatar" *ngIf="!avatarUrl">{{ nome && nome.length > 0 ? nome.charAt(0) : '?' }}</div>
+
+      <img *ngIf="avatarUrl" [src]="avatarUrl" alt="Avatar" class="avatar-img" />
+
+      <div class="user-info">
+        <div class="username">{{ nome }}</div>
+        <div class="email">{{ email }}</div>
+      </div>
+
+      <button class="logout-button" (click)="logout()" title="Sair">
+        <i class="pi pi-sign-out"></i>
+      </button>
+    </div>
+
+
+    <nav class="sidebar-menu">
+      <button (click)="goTo('/home')">
+        <i class="pi pi-home"></i>
+        <span>Home</span>
+      </button>
+
+      <button (click)="goTo('/profile')">
+        <i class="pi pi-user"></i>
+        <span>Perfil</span>
+      </button>
+
+      <button (click)="goTo('/configurations')">
+        <i class="pi pi-cog"></i>
+        <span>Configurações</span>
+      </button>
+    </nav>
+
+  </div>

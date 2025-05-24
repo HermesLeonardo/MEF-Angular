@@ -1,0 +1,64 @@
+<div class="modal-overlay">
+  <div class="modal-content">
+    <h2>Nova Empresa/Cliente</h2>
+
+    <div class="switch-type">
+      <button [class.active]="selectedType === 'cpf'" (click)="setType('cpf')">CPF</button>
+      <button [class.active]="selectedType === 'cnpj'" (click)="setType('cnpj')">CNPJ</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      
+      <label>Nome da empresa</label>
+      <input formControlName="name" />
+      <div *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
+        <small *ngIf="form.get('name')?.errors?.['required']">Nome é obrigatório.</small>
+        <small *ngIf="form.get('name')?.errors?.['minlength']">Mínimo de 3 caracteres.</small>
+      </div>
+
+      <label>{{ selectedType.toUpperCase() }}</label>
+      <input formControlName="document"  [attr.placeholder]="selectedType === 'cpf' ? '000.000.000-00' : '00.000.000/0000-00'"
+       [mask]="selectedType === 'cpf' ? '000.000.000-00' : '00.000.000/0000-00'" />
+      <div *ngIf="form.get('document')?.touched && form.get('document')?.invalid">
+        <small *ngIf="form.get('document')?.errors?.['required']">Documento é obrigatório.</small>
+        <small *ngIf="form.get('document')?.errors?.['pattern']">Formato inválido.</small>
+      </div>
+
+      <label>E-mail de contato</label>
+      <input formControlName="email" />
+      <div *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+        <small *ngIf="form.get('email')?.errors?.['required']">E-mail é obrigatório.</small>
+        <small *ngIf="form.get('email')?.errors?.['email']">E-mail inválido.</small>
+      </div>
+
+      <label>Telefone</label>
+      <input formControlName="phone" placeholder="(00) 00000-0000" mask="(00) 00000-0000"/>
+      <div *ngIf="form.get('phone')?.touched && form.get('phone')?.invalid">
+        <small *ngIf="form.get('phone')?.errors?.['pattern']">Telefone inválido.</small>
+      </div>
+
+      <label>Nome do responsável</label>
+      <input formControlName="responsible" />
+      <div *ngIf="form.get('responsible')?.touched && form.get('responsible')?.invalid">
+        <small *ngIf="form.get('responsible')?.errors?.['required']">Responsável é obrigatório.</small>
+      </div>
+
+      <label>Endereço</label>
+      <input formControlName="address" />
+      <div *ngIf="form.get('address')?.touched && form.get('address')?.invalid">
+        <small *ngIf="form.get('address')?.errors?.['required']">Endereço é obrigatório.</small>
+      </div>
+
+      <label>Quantidade de funcionários</label>
+      <input type="number" formControlName="funci_quanti" />
+      <div *ngIf="form.get('funci_quanti')?.touched && form.get('funci_quanti')?.invalid">
+        <small *ngIf="form.get('funci_quanti')?.errors?.['min']">Inserir numeros de funcionarios.</small>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn-save" [disabled]="form.invalid">Cadastrar</button>
+        <button type="button" class="btn-cancel" (click)="close.emit()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="login-wrapper">
+  <div class="left-panel">
+    <div class="logo">MEF</div>
+    <h1>MEF</h1>
+    <p>Conecte-se com o seu escritório</p>
+    <span>A qualquer hora</span>
+  </div>
+
+  <div class="right-panel">
+    <form (ngSubmit)="onSubmit(emailInput.value, senhaInput.value)" class="login-form">
+      <h2>LOGIN</h2>
+      <p>Bem-vindo de volta!</p>
+
+      <div class="input-group">
+        <label for="email">Email Sua Puta</label>
+        <input #emailInput name="email" required placeholder="Digite seu e-mail" />
+      </div>
+
+      <div class="input-group">
+        <label for="senha">Senha</label>
+        <input #senhaInput name="senha" required type="password" placeholder="Digite sua senha" />
+      </div>
+
+      <div class="links">
+        <a href="#">Esqueceu a senha?</a>
+      </div>
+
+      <button type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Entrando...' : 'ENTRAR' }}
+      </button>
+
+      <p class="register-link">
+        Ainda não possui uma conta? <a href="/register">Cadastre-se</a>
+      </p>
+    </form>
+  </div>
+</div>

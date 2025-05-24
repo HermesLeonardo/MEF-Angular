@@ -1,0 +1,100 @@
+<div class="config-layout">
+  <app-sidebar></app-sidebar>
+
+  <div class="config-content">
+    <!-- Aparência -->
+    <div class="config-card">
+      <h3>Aparência</h3>
+      <label class="checkbox-wrapper">
+        <input type="radio" name="tema" (change)="alterarTema('claro')" [checked]="tema === 'claro'" />
+        <span class="custom-checkbox"></span>
+        Claro
+      </label>
+      <label class="checkbox-wrapper">
+        <input type="radio" name="tema" (change)="alterarTema('escuro')" [checked]="tema === 'escuro'" />
+        <span class="custom-checkbox"></span>
+        Escuro
+      </label>
+    </div>
+
+    <!-- Preferências -->
+    <div class="config-card">
+      <h3>Preferências</h3>
+      <label class="checkbox-wrapper">
+        <input type="checkbox" [(ngModel)]="animacoes" (change)="togglePreferencia('Animações', animacoes)" />
+        <span class="custom-checkbox"></span>
+        Ativar animações de transições
+      </label>
+      <label class="checkbox-wrapper">
+        <input type="checkbox" [(ngModel)]="alertasSistema"
+          (change)="togglePreferencia('Alertas de sistema', alertasSistema)" />
+        <span class="custom-checkbox"></span>
+        Exibir alertas de sistema
+      </label>
+    </div>
+
+    <!-- Experiência -->
+    <div class="config-card">
+      <h3>Experiência</h3>
+      <label class="checkbox-wrapper">
+        <input type="checkbox" [(ngModel)]="mostrarTooltips" (change)="togglePreferencia('Dicas', mostrarTooltips)" />
+        <span class="custom-checkbox"></span>
+        Mostrar dicas ao passar o mouse
+      </label>
+      <label class="checkbox-wrapper">
+        <input type="checkbox" [(ngModel)]="confirmacoesRapidas"
+          (change)="togglePreferencia('Confirmações rápidas', confirmacoesRapidas)" />
+        <span class="custom-checkbox"></span>
+        Confirmar ações automaticamente
+      </label>
+    </div>
+
+    <!-- Cadastro de Novo Usuário com estilo padronizado e validação -->
+    <div class="config-card">
+      <h3>Cadastrar nova conta</h3>
+      <form [formGroup]="formGroup" (ngSubmit)="cadastrarUsuario()"
+        style="display: flex; flex-direction: column; gap: 1rem;">
+
+        <label>Nome completo*</label>
+        <input class="input-padrao" type="text" formControlName="name" placeholder="Nome completo" />
+        <mat-error *ngIf="formGroup.get('name')?.touched && formGroup.get('name')?.invalid">
+          {{ errorMessage('name') }}
+        </mat-error>
+
+        <label>Email*</label>
+        <input class="input-padrao" type="email" formControlName="email" placeholder="Email" />
+        <mat-error *ngIf="formGroup.get('email')?.touched && formGroup.get('email')?.invalid">
+          {{ errorMessage('email') }}
+        </mat-error>
+
+        <label>Senha*</label>
+        <input class="input-padrao" type="password" formControlName="password" placeholder="Senha" />
+        <mat-error *ngIf="formGroup.get('password')?.touched && formGroup.get('password')?.invalid">
+          {{ errorMessage('password') }}
+        </mat-error>
+
+        <label>CPF*</label>
+        <input class="input-padrao" type="text" formControlName="cpf" placeholder="000.000.000-00"
+          mask="000.000.000-00" />
+        <mat-error *ngIf="formGroup.get('cpf')?.touched && formGroup.get('cpf')?.invalid">
+          {{ errorMessage('cpf') }}
+        </mat-error>
+
+
+        <label>Telefone (opcional)</label>
+        <input class="input-padrao" type="text" formControlName="telefone" placeholder="Telefone" />
+
+        <label>Foto (opcional)</label>
+        <input type="file" (change)="handleFileInput($event)" />
+
+        <label class="checkbox-wrapper">
+          <input type="checkbox" formControlName="role" />
+          <span class="custom-checkbox"></span>
+          Conceder permissão de administrador
+        </label>
+
+        <button type="submit" class="btn-save">Cadastrar</button>
+      </form>
+    </div>
+
+  </div>

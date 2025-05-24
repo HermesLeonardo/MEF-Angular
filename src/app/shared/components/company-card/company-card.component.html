@@ -1,0 +1,16 @@
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">{{ name }}</span>
+    <button class="options-button">⋮</button>
+  </div>
+
+  <div class="card-body">
+    <span class="number">{{ employeeCount }}</span>
+    <span class="label">Funcionários</span>
+  </div>
+
+  <div class="card-footer">
+    <span class="material-icons clock-icon">schedule</span>
+    <span class="updated">Última atualização: {{ lastUpdate | date: 'dd/MM/yyyy' }}</span>
+  </div>
+</div>

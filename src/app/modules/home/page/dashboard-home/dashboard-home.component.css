@@ -1,0 +1,124 @@
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #0f172a;
+  color: #fff;
+  margin-left: 50px;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 250px;
+  padding: 1rem 2rem;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1f2937;
+  padding: 1rem;
+  border-bottom: 1px solid #334155;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.search-input {
+  background-color: #334155;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  color: white;
+  width: 250px;
+}
+
+.dashboard-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-primary {
+  background-color: #3b82f6;
+  border: none;
+  padding: 0.5rem 1rem;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+.company-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.pagination-button {
+  background-color: #60a5fa;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.pagination-button:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.files-section {
+  margin-top: 2rem;
+}
+
+.search-files {
+  margin-bottom: 1rem;
+  background-color: #334155;
+  border: none;
+  padding: 0.5rem;
+  color: white;
+  border-radius: 8px;
+  width: 250px;
+}
+
+.files-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.files-table th,
+.files-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #334155;
+  text-align: left;
+}
+
+.status-indicator {
+  font-weight: bold;
+  display: inline-block;
+}
+
+.status-indicator.ativo {
+  color: #22c55e;
+}
+
+.status-indicator.inativo {
+  color: #ef4444;
+}
