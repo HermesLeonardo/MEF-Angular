@@ -35,48 +35,30 @@ export class ProfileComponent implements OnInit {
   }
 
   carregarUsuario(): void {
-    console.log('🔄 Iniciando carregamento do usuário...');
+    const data = this.profileService.obterDadosUsuarioLogado();
 
-    this.profileService.obterDadosUsuarioLogado().subscribe({
-      next: (data) => {
-        console.log('Usuário recebido da API:', data);
+    if (!data) {
+      console.warn('Usuário não encontrado no localStorage.');
+      return;
+    }
 
-        this.usuario = {
-          id: data.id,
-          name: data.name || 'N/A',
-          email: data.email || 'N/A',
-          password: data.password || 'N/A',
-          cpf: data.cpf || 'N/A',
-          telefone: data.telefone || 'N/A',
-          photo: data.photo || null,
-          role: data.role || 'N/A',
-          created_at: data.created_at || new Date(),
-        };
+    this.usuario = {
+      id: data.id,
+      name: data.name || 'N/A',
+      email: data.email || 'N/A',
+      password: data.password || 'N/A',
+      cpf: data.cpf || 'N/A',
+      telefone: data.telefone || 'N/A',
+      photo: data.photo || null,
+      role: data.role || 'N/A',
+      created_at: new Date(data.created_at),
+      cnpj: data.cnpj || null,
+    };
 
-        console.log('this.usuario populado:', this.usuario);
-
-        // Requisição separada para a foto, mantendo lógica atual
-        if (this.usuario.photo) {
-          this.profileService.getFoto(this.usuario.id).subscribe({
-            next: (blob) => {
-              const url = URL.createObjectURL(blob);
-              this.fotoPreviewUrl = this.sanitizer.bypassSecurityTrustUrl(url);
-            },
-            error: () => {
-              console.warn('⚠️ Falha ao carregar a imagem do usuário.');
-            }
-          });
-        }
-      },
-      error: (err) => {
-        console.error('Erro ao carregar dados do usuário:', err);
-      }
-    });
+    if (this.usuario.photo) {
+      this.fotoPreviewUrl = this.sanitizer.bypassSecurityTrustUrl(this.usuario.photo);
+    }
   }
-
-
-
-
 
   obterIniciais(nome: string | undefined): string {
     if (!nome) return '';
@@ -111,63 +93,27 @@ export class ProfileComponent implements OnInit {
     if (this.fotoSelecionada) {
       const formData = new FormData();
       formData.append('photo', this.fotoSelecionada);
-
-      this.profileService.uploadFoto(this.usuario.id, formData).subscribe({
-        next: () => {
-          this.mostrarMensagem('Foto atualizada com sucesso.', 'success');
-          this.atualizarDadosTextuais();
-        },
-        error: () => {
-          this.mostrarMensagem('Erro ao atualizar a foto.', 'error');
-        }
-      });
-    } else {
-      this.atualizarDadosTextuais();
+      this.profileService.uploadFoto(this.usuario.id, formData);
+      this.mostrarMensagem('Foto atualizada com sucesso.', 'success');
     }
+
+    this.atualizarDadosTextuais();
   }
 
-  salvarFoto() {
-    if (this.fotoSelecionada) {
-      const formData = new FormData();
-      formData.append('photo', this.fotoSelecionada);
+atualizarDadosTextuais() {
+  const dadosAtualizados = {
+    name: this.usuario.name,
+    email: this.usuario.email,
+    telefone: this.usuario.telefone,
+    cpf: this.usuario.cpf,
+    role: this.usuario.role  
+  };
 
-      this.profileService.uploadFoto(this.usuario.id, formData).subscribe({
-        next: () => {
-          this.mostrarMensagem('Foto atualizada com sucesso.', 'success');
-          this.fotoSelecionada = null;
-          this.carregarUsuario();
-        },
-        error: () => {
-          this.mostrarMensagem('Erro ao atualizar a foto.', 'error');
-        }
-      });
-    }
-  }
-
-
-
-
-  atualizarDadosTextuais() {
-    const dadosAtualizados = {
-      name: this.usuario.name,
-      email: this.usuario.email,
-      telefone: this.usuario.telefone,
-      cpf: this.usuario.cpf
-    };
-
-    this.enviarAtualizacao(dadosAtualizados);
-  }
-
-  private enviarAtualizacao(dadosAtualizados: Partial<Profile>) {
-    this.profileService.atualizarUsuario(dadosAtualizados).subscribe({
-      next: () => {
-        this.mostrarMensagem('Dados atualizados com sucesso!', 'success');
-        this.editando = false;
-        this.carregarUsuario();
-      },
-      error: () => this.mostrarMensagem('Erro ao atualizar os dados', 'error'),
-    });
-  }
+  this.profileService.atualizarUsuario(dadosAtualizados);
+  this.mostrarMensagem('Dados atualizados com sucesso!', 'success');
+  this.editando = false;
+  this.carregarUsuario();
+}
 
 
   atualizarSenha() {
@@ -176,18 +122,19 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
-    this.profileService.atualizarSenha({
+    const sucesso = this.profileService.atualizarSenha({
       senhaAtual: this.senhaAtual,
       novaSenha: this.novaSenha,
-    }).subscribe({
-      next: () => {
-        this.mostrarMensagem('Senha atualizada com sucesso!', 'success');
-        this.senhaAtual = '';
-        this.novaSenha = '';
-        this.confirmarSenha = '';
-      },
-      error: () => this.mostrarMensagem('Erro ao atualizar a senha', 'error'),
     });
+
+    if (sucesso) {
+      this.mostrarMensagem('Senha atualizada com sucesso!', 'success');
+      this.senhaAtual = '';
+      this.novaSenha = '';
+      this.confirmarSenha = '';
+    } else {
+      this.mostrarMensagem('Erro ao atualizar a senha', 'error');
+    }
   }
 
   abrirConfirmacao() {
@@ -206,14 +153,10 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
-    this.profileService.excluirConta().subscribe({
-      next: () => {
-        this.mostrarMensagem('Conta excluída com sucesso!', 'success');
-        this.fecharConfirmacao();
-        // redirecionamento ou logout
-      },
-      error: () => this.mostrarMensagem('Erro ao excluir conta', 'error'),
-    });
+    this.profileService.excluirConta();
+    this.mostrarMensagem('Conta excluída com sucesso!', 'success');
+    this.fecharConfirmacao();
+    // redirecionamento ou logout pode ir aqui
   }
 
   alternarEdicao() {
@@ -231,4 +174,26 @@ export class ProfileComponent implements OnInit {
       panelClass: [`snackbar-${tipo}`],
     });
   }
+
+  salvarFoto(): void {
+    if (this.fotoSelecionada) {
+      const formData = new FormData();
+      formData.append('photo', this.fotoSelecionada);
+
+      this.profileService.uploadFoto(this.usuario.id, formData);
+      this.mostrarMensagem('Foto atualizada com sucesso.', 'success');
+
+      this.fotoSelecionada = null;
+      this.carregarUsuario();
+    } else {
+      this.mostrarMensagem('Nenhuma foto selecionada.', 'error');
+    }
+  }
+
+  onRoleCheckboxChange(event: Event): void {
+  const checkbox = event.target as HTMLInputElement;
+  this.usuario.role = checkbox.checked ? 'admin' : 'user';
+}
+
+
 }

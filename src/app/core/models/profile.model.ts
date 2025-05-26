@@ -7,5 +7,6 @@ export interface Profile {
   photo: string | null;
   telefone: string | null;
   cpf: string | null;
+  cnpj: string | null;
   role: string;
 }

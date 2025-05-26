@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProfileService } from '../../../../core/services/api/profile.service';
-
-
+import { Profile } from '../../../../core/models/profile.model';
 
 @Component({
   selector: 'app-config-page',
@@ -17,24 +16,25 @@ export class ConfigPageComponent implements OnInit {
   alertasSistema = true;
   mostrarTooltips = true;
   confirmacoesRapidas = false;
-  
 
   formGroup: FormGroup;
+  usuario: Profile | null = null;
 
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private profileService: ProfileService) {
-
-
+  constructor(
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar,
+    private profileService: ProfileService
+  ) {
     this.formGroup = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       cpf: ['', Validators.required],
       telefone: [''],
+      cnpj: [''],
       role: [false],
       photo: [null],
     });
-
-
   }
 
   ngOnInit() {
@@ -78,18 +78,29 @@ export class ConfigPageComponent implements OnInit {
     formData.append('password', value.password);
     formData.append('cpf', value.cpf);
     if (value.telefone) formData.append('telefone', value.telefone);
+    if (value.cnpj) formData.append('cnpj', value.cnpj);
     formData.append('role', value.role ? 'admin' : 'user');
     if (value.photo) formData.append('photo', value.photo);
 
-    this.profileService.cadastrarUsuario(formData).subscribe({
-      next: () => this.snackBar.open('Usuário cadastrado com sucesso!', 'Fechar', { duration: 3000 }),
-      error: () => this.onError('Erro ao cadastrar usuário')
-    });
+    this.profileService.cadastrarUsuario(formData);
 
     this.formGroup.reset();
+
+    this.snackBar.open('✅ Usuário cadastrado com sucesso!', 'Fechar', {
+      duration: 3000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      panelClass: ['snackbar-success']
+    });
+
+    const usuario = this.profileService.obterDadosUsuarioLogado();
+    if (usuario) {
+      this.usuario = usuario;
+    }
+
+    console.log('Usuário salvo:', usuario);
   }
 
-  // Preferência com feedback
   togglePreferencia(nome: string, valor: boolean) {
     const acao = valor ? 'ativada' : 'desativada';
     this.snackBar.open(`Opção "${nome}" ${acao}`, 'Fechar', { duration: 2000 });

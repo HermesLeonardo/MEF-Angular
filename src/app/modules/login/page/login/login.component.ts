@@ -36,22 +36,23 @@ export class LoginComponent {
 
     this.isLoading = true;
 
-    this.authService.login(cpfCnpj, senha).subscribe({
-      next: (usuario: Usuario) => {
-        this.authService.salvarUsuario(usuario);
+    const sucesso = this.authService.login(cpfCnpj, senha);
+
+    if (sucesso) {
+      const usuario = this.authService.obterUsuario();
+      if (usuario) {
         this.userDataService.setUser(usuario);
         this.router.navigate(['/home']);
-      },
-      error: (error: any) => {
-        this.isLoading = false;
-
-        this.snackBar.open('Email ou senha inválidos.', 'Fechar', {
-          duration: 3000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          panelClass: ['mat-warn']
-        });
       }
-    });
+    } else {
+      this.snackBar.open('E-mail ou senha inválidos.', 'Fechar', {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        panelClass: ['mat-warn']
+      });
+    }
+
+    this.isLoading = false;
   }
 }

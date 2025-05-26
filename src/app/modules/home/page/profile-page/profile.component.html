@@ -26,7 +26,15 @@
           </div>
           <div *ngIf="editando">
             <input [(ngModel)]="usuario.name" placeholder="Nome completo" />
-            <input [(ngModel)]="usuario.role" placeholder="Cargo" />
+
+            <label class="custom-checkbox">
+              <input type="checkbox" [checked]="usuario.role === 'admin'" (change)="onRoleCheckboxChange($event)" />
+              <span class="checkmark"></span>
+              {{ usuario.role === 'admin' ? 'Revogar permissão de administrador' : 'Conceder permissão de administrador'
+              }}
+            </label>
+
+
           </div>
         </div>
       </div>

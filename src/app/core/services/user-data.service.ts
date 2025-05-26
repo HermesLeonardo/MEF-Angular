@@ -10,6 +10,9 @@ export class UserDataService {
     id: 0,
     nome: '',
     email: '',
+    password: '',
+    cpf: '',
+    cnpj: '',
     cargo: '',
     telefone: '',
     cpfCnpj: '',
@@ -20,35 +23,38 @@ export class UserDataService {
   user$ = this.userSubject.asObservable();
 
   constructor() {
-    const userJson = localStorage.getItem('usuario');
+    const userJson = localStorage.getItem('usuario_logado');
     if (userJson) {
       const usuario: Usuario = JSON.parse(userJson);
       this.setUser(usuario);
     }
   }
 
-  setUser(usuario: Usuario) {
+  setUser(usuario: Usuario): void {
     this.userSubject.next(usuario);
-    localStorage.setItem('usuario', JSON.stringify(usuario));
+    localStorage.setItem('usuario_logado', JSON.stringify(usuario));
   }
 
-  atualizarUsuario(parcial: Partial<Usuario>) {
+  atualizarUsuario(parcial: Partial<Usuario>): void {
     const atual = this.userSubject.getValue();
     const atualizado = { ...atual, ...parcial };
     this.setUser(atualizado);
   }
 
-  clearUser() {
+  clearUser(): void {
     this.userSubject.next({
       id: 0,
       nome: '',
       email: '',
+      password: '',
+      cpf: '',
+      cnpj: '',
       cargo: '',
       telefone: '',
       cpfCnpj: '',
       empresa: '',
       fotoUrl: ''
     });
-    localStorage.removeItem('usuario');
+    localStorage.removeItem('usuario_logado');
   }
 }

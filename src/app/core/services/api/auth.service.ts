@@ -1,34 +1,38 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Usuario } from '../../models/usuario.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/users/login';
+  constructor() { }
 
-  constructor(private http: HttpClient) {}
+  login(cpfCnpj: string, senha: string): boolean {
+    console.log('Verificando login com:', { email: cpfCnpj, password: senha });
 
-  login(cpfCnpj: string, senha: string): Observable<Usuario> {
-    console.log('Chamando API de login com:', { email: cpfCnpj, password: senha });
-    return this.http.post<Usuario>(this.apiUrl, {
-      email: cpfCnpj,
-      password: senha
-    });
-  }
-  
-  salvarUsuario(usuario: Usuario) {
-    localStorage.setItem('usuario', JSON.stringify(usuario));
+    const usuarios: Usuario[] = JSON.parse(localStorage.getItem('usuarios') || '[]');
+
+    const usuario = usuarios.find(
+      u =>
+        (u.email === cpfCnpj || u.cpf === cpfCnpj || u.cnpj === cpfCnpj) &&
+        u.password === senha
+    );
+
+    if (usuario) {
+      localStorage.setItem('usuario_logado', JSON.stringify(usuario));
+      return true;
+    }
+
+    return false;
   }
 
   obterUsuario(): Usuario | null {
-    const data = localStorage.getItem('usuario');
+    const data = localStorage.getItem('usuario_logado');
     return data ? JSON.parse(data) : null;
   }
 
-  logout() {
-    localStorage.removeItem('usuario');
+
+  logout(): void {
+    localStorage.removeItem('usuario_logado');
   }
 }

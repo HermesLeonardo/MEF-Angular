@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Company } from '../../../../core/models/company.model';
 import { CompanyService } from '../../../../core/services/api/company.service';
 import { AddCompanyModalComponent } from '../company-modal/add-company-modal.component';
+import { Usuario } from '../../../../core/models/usuario.model';
+import { AuthService } from '../../../../core/services/api/auth.service';
 
 type CompanyType = 'company' | 'client';
 
@@ -29,7 +31,10 @@ interface FileItem {
   styleUrls: ['./dashboard-home.component.css'],
 })
 export class DashboardHomeComponent implements OnInit {
-  constructor(private router: Router, private companyService: CompanyService) { }
+  constructor(private router: Router,
+    private companyService: CompanyService,
+    private authService: AuthService,
+  ) { }
 
   searchQuery = '';
   searchFile = '';
@@ -42,17 +47,15 @@ export class DashboardHomeComponent implements OnInit {
   companies: Company[] = [];
   files: FileItem[] = [];
 
-  usuarioLogado: any;
+  usuarioLogado: Usuario | null = null;
 
   ngOnInit(): void {
-    const data = localStorage.getItem('usuario');
-    if (data) {
-      this.usuarioLogado = JSON.parse(data);
-    }
+    this.usuarioLogado = this.authService.obterUsuario();
 
     this.loadCompanies();
-    this.loadFiles(); // Aqui futuramente entra a chamada pro backend
+    this.loadFiles();
   }
+
 
   loadCompanies(): void {
     this.companyService.getCompanies().subscribe({
