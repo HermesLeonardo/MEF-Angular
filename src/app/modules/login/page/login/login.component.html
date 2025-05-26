@@ -7,19 +7,26 @@
   </div>
 
   <div class="right-panel">
-    <form (ngSubmit)="onSubmit(emailInput.value, senhaInput.value)" class="login-form">
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="login-form">
       <h2>LOGIN</h2>
       <p>Bem-vindo de volta!</p>
 
-      <div class="input-group">
-        <label for="email">Email Sua Puta</label>
-        <input #emailInput name="email" required placeholder="Digite seu e-mail" />
-      </div>
+      <div class="input-group" [class.invalid]="formGroup.get('email')?.invalid && formGroup.get('email')?.touched">
+      <label for="email">Email</label>
+      <input formControlName="email" placeholder="Digite seu e-mail" />
+      <mat-error class="error" *ngIf="formGroup.get('email')?.touched && formGroup.get('email')?.invalid">
+            {{ errorMessage('email') }}
+      </mat-error>
+    </div>
 
-      <div class="input-group">
-        <label for="senha">Senha</label>
-        <input #senhaInput name="senha" required type="password" placeholder="Digite sua senha" />
-      </div>
+    <div class="input-group" [class.invalid]="formGroup.get('senha')?.invalid && formGroup.get('senha')?.touched">
+      <label for="senha">Senha</label>
+      <input formControlName="senha" type="password" placeholder="Digite sua senha" />
+      <mat-error class="error" *ngIf="formGroup.get('senha')?.touched && formGroup.get('senha')?.invalid">
+            {{ errorMessage('senha') }}
+      </mat-error>
+    </div>
+
 
       <div class="links">
         <a href="#">Esqueceu a senha?</a>

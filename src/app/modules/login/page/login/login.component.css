@@ -84,3 +84,14 @@ button:disabled {
   color: #3182ce;
   text-decoration: none;
 }
+
+.input-group.invalid input {
+  border-color: #e53e3e; /* vermelho */
+  background-color: #fff5f5;
+}
+
+.error {
+  color: #e53e3e;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
