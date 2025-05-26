@@ -55,9 +55,15 @@ export class AddCompanyModalComponent {
     };
 
 
-    this.companyService.createCompany(payload).subscribe(() => {
+    this.companyService.createCompany(payload).subscribe({
+    next: () => {
       this.companyAdded.emit();
       this.close.emit();
+    },
+    error: (err) => {
+      console.error('Erro ao cadastrar empresa:', err);
+      alert('Erro ao salvar empresa.');
+    }
     });
   }
 }
