@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { Company } from '../../../../core/models/company.model';
 import { CompanyService } from '../../../../core/services/api/company.service';
 import { AddCompanyModalComponent } from '../company-modal/add-company-modal.component';
-import { Usuario } from '../../../../core/models/usuario.model';
 import { AuthService } from '../../../../core/services/api/auth.service';
+import { Profile } from '../../../../core/models/profile.model';
 
 type CompanyType = 'company' | 'client';
 
@@ -47,7 +47,7 @@ export class DashboardHomeComponent implements OnInit {
   companies: Company[] = [];
   files: FileItem[] = [];
 
-  usuarioLogado: Usuario | null = null;
+  usuarioLogado: Profile | null = null;
 
   ngOnInit(): void {
     this.usuarioLogado = this.authService.obterUsuario();

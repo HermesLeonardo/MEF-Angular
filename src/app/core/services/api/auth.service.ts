@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Usuario } from '../../models/usuario.model';
+import { Profile } from '../../models/profile.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,10 @@ export class AuthService {
   login(cpfCnpj: string, senha: string): boolean {
     console.log('Verificando login com:', { email: cpfCnpj, password: senha });
 
-    const usuarios: Usuario[] = JSON.parse(localStorage.getItem('usuarios') || '[]');
+    const usuarios: Profile[] = JSON.parse(localStorage.getItem('usuarios') || '[]');
+
+    // Adiciona esse log para verificar os usuários cadastrados no localStorage
+    console.log('Usuários salvos no localStorage:', usuarios);
 
     const usuario = usuarios.find(
       u =>
@@ -26,7 +29,7 @@ export class AuthService {
     return false;
   }
 
-  obterUsuario(): Usuario | null {
+  obterUsuario(): Profile | null {
     const data = localStorage.getItem('usuario_logado');
     return data ? JSON.parse(data) : null;
   }

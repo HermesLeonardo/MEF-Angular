@@ -11,21 +11,22 @@
           <button class="btn-cancel" (click)="alternarEdicao()">
             {{ editando ? 'Cancelar' : 'Editar' }}
           </button>
+          <button *ngIf="isDev" (click)="deduplicar()">Deduplicar usuários</button>
         </div>
       </div>
 
       <div class="info-row">
         <div class="avatar">
           <img *ngIf="fotoPreviewUrl" [src]="fotoPreviewUrl" alt="Foto do usuário" />
-          <span *ngIf="!fotoPreviewUrl">{{ obterIniciais(usuario.name) }}</span>
+          <span *ngIf="!fotoPreviewUrl">{{ obterIniciais(usuario.nome) }}</span>
         </div>
         <div class="info-text">
           <div *ngIf="!editando">
-            <strong>{{ usuario.name || 'N/A' }}</strong>
+            <strong>{{ usuario.nome || 'N/A' }}</strong>
             <div>{{ usuario.role || 'N/A' }}</div>
           </div>
           <div *ngIf="editando">
-            <input [(ngModel)]="usuario.name" placeholder="Nome completo" />
+            <input [(ngModel)]="usuario.nome" placeholder="Nome completo" />
 
             <label class="custom-checkbox">
               <input type="checkbox" [checked]="usuario.role === 'admin'" (change)="onRoleCheckboxChange($event)" />
@@ -33,7 +34,6 @@
               {{ usuario.role === 'admin' ? 'Revogar permissão de administrador' : 'Conceder permissão de administrador'
               }}
             </label>
-
 
           </div>
         </div>
@@ -62,12 +62,13 @@
       <!-- CPF -->
       <div class="info-row" *ngIf="!editando">
         <i class="pi pi-id-card"></i>
-        <span><strong>CPF:</strong> {{ usuario.cpf || 'N/A' }}</span>
+        <span><strong>CPF:</strong> {{ formatarCPFVisual(usuario.cpf) }}</span>
       </div>
       <div class="info-row" *ngIf="editando">
         <i class="pi pi-id-card"></i>
-        <input [(ngModel)]="usuario.cpf" placeholder="CPF" />
+        <input [(ngModel)]="usuario.cpf" placeholder="CPF" mask="000.000.000-00" />
       </div>
+
 
       <!-- Campo de empresa foi removido por não existir mais no model -->
 
@@ -79,7 +80,7 @@
       <div class="avatar-preview">
         <div class="avatar">
           <img *ngIf="fotoPreviewUrl" [src]="fotoPreviewUrl" alt="Foto do usuário" />
-          <span *ngIf="!fotoPreviewUrl">{{ obterIniciais(usuario.name) }}</span>
+          <span *ngIf="!fotoPreviewUrl">{{ obterIniciais(usuario.nome) }}</span>
         </div>
       </div>
       <div class="actions">

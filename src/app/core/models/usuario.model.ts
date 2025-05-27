@@ -1,3 +1,4 @@
+/*
 export interface Usuario {
   password: string;
   cpf: string;
@@ -11,3 +12,4 @@ export interface Usuario {
   empresa: string;
   fotoUrl?: string;
 }
+*/

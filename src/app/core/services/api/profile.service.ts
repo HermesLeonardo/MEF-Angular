@@ -8,13 +8,35 @@ export class ProfileService {
   constructor() { }
 
   private getUsuario(): Profile | null {
-    const data = localStorage.getItem('usuario');
+    const data = localStorage.getItem('usuario_logado');
     return data ? JSON.parse(data) : null;
   }
 
+
   private salvarUsuario(usuario: Profile): void {
-    localStorage.setItem('usuario', JSON.stringify(usuario));
+    localStorage.setItem('usuario_logado', JSON.stringify(usuario));
+
+    const listaRaw = localStorage.getItem('usuarios');
+    const lista: Profile[] = listaRaw ? JSON.parse(listaRaw) : [];
+
+    // Garante unicidade por email (ou cpf/cnpj)
+    const index = lista.findIndex((u: Profile) =>
+      u.id === usuario.id || u.email === usuario.email
+    );
+
+    if (index !== -1) {
+      lista[index] = usuario;
+    } else {
+      // ⚠️ opcional: log para rastrear se ainda está criando usuário duplicado
+      console.warn('[SalvarUsuario] Novo usuário foi adicionado (não encontrado por ID ou email)');
+      lista.push(usuario);
+    }
+
+    localStorage.setItem('usuarios', JSON.stringify(lista));
   }
+
+
+
 
   getUserId(): number | null {
     return this.getUsuario()?.id || null;
@@ -26,30 +48,36 @@ export class ProfileService {
   }
 
 
-atualizarUsuario(profile: Partial<Profile>): void {
-  const usuarioLogadoRaw = localStorage.getItem('usuario_logado');
-  const listaUsuariosRaw = localStorage.getItem('usuarios');
+  atualizarUsuario(profile: Partial<Profile>): void {
+    const usuarioLogadoRaw = localStorage.getItem('usuario_logado');
+    const listaUsuariosRaw = localStorage.getItem('usuarios') || '[]';
 
-  if (!usuarioLogadoRaw || !listaUsuariosRaw) return;
+    if (!usuarioLogadoRaw || !listaUsuariosRaw) {
+      console.warn('[SERVICE] Falha ao obter dados do localStorage');
+      return;
+    }
 
-  const usuarioLogado: Profile = JSON.parse(usuarioLogadoRaw);
-  const usuarios: Profile[] = JSON.parse(listaUsuariosRaw);
+    const usuarioLogado: Profile = JSON.parse(usuarioLogadoRaw);
+    const usuarios: Profile[] = JSON.parse(listaUsuariosRaw);
 
-  const atualizado: Profile = {
-    ...usuarioLogado,
-    ...profile
-  };
-
-
-  localStorage.setItem('usuario_logado', JSON.stringify(atualizado));
+    const atualizado: Profile = {
+      ...usuarioLogado,
+      ...profile
+    };
 
 
-  const index = usuarios.findIndex(u => u.id === atualizado.id);
-  if (index !== -1) {
-    usuarios[index] = atualizado;
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    localStorage.setItem('usuario_logado', JSON.stringify(atualizado));
+
+    const index = usuarios.findIndex(u => u.id === atualizado.id);
+    if (index !== -1) {
+      usuarios[index] = atualizado;
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+      console.log('[SERVICE] Lista de usuários atualizada');
+    } else {
+      console.warn('[SERVICE] Usuário não encontrado na lista de usuários');
+    }
   }
-}
+
 
 
 
@@ -78,17 +106,22 @@ atualizarUsuario(profile: Partial<Profile>): void {
 
     const reader = new FileReader();
     reader.onload = () => {
-      usuario.photo = reader.result as string;
+      const fotoBase64 = reader.result as string;
+      usuario.photo = fotoBase64;
+
+      // Salva no localStorage: usuario_logado + lista
       this.salvarUsuario(usuario);
+      console.log('[Foto] Foto salva no usuário:', usuario);
     };
 
-    reader.readAsDataURL(file); // Converte imagem para base64
+    reader.readAsDataURL(file);
   }
+
 
   cadastrarUsuario(formData: FormData): void {
     const novoUsuario: Profile = {
       id: Date.now(),
-      name: formData.get('name') as string,
+      nome: formData.get('name') as string,
       email: formData.get('email') as string,
       password: formData.get('password') as string,
       created_at: new Date(),
@@ -110,4 +143,27 @@ atualizarUsuario(profile: Partial<Profile>): void {
     if (!usuario || usuario.id !== id) return null;
     return usuario.photo;
   }
+
+
+
+
+  deduplicarUsuarios(): void {
+    const raw = localStorage.getItem('usuarios');
+    if (!raw) return;
+
+    const lista: Profile[] = JSON.parse(raw);
+
+    // Elimina duplicatas mantendo o último de cada email
+    const unicos: Map<string, Profile> = new Map();
+
+    for (const u of lista) {
+      unicos.set(u.email, u); // sobrescreve duplicados com mesmo email
+    }
+
+    const deduplicado = Array.from(unicos.values());
+    localStorage.setItem('usuarios', JSON.stringify(deduplicado));
+    console.log('[✔] Lista de usuários deduplicada:', deduplicado);
+  }
+
+
 }

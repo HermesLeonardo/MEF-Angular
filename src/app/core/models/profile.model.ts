@@ -1,6 +1,7 @@
+
 export interface Profile {
   id: number;
-  name: string;
+  nome: string;
   email: string;
   password: string;
   created_at: Date;
