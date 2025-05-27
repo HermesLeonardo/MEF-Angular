@@ -21,18 +21,26 @@
     <nav class="sidebar-menu">
       <button (click)="goTo('/home')">
         <i class="pi pi-home"></i>
+        <mat-icon class="mat-icon">home</mat-icon>
         <span>Home</span>
       </button>
 
       <button (click)="goTo('/profile')">
         <i class="pi pi-user"></i>
+        <mat-icon class="mat-icon">account_circle</mat-icon>
         <span>Perfil</span>
       </button>
 
       <button (click)="goTo('/configurations')">
         <i class="pi pi-cog"></i>
+        <mat-icon class="mat-icon">settings</mat-icon>
         <span>Configurações</span>
       </button>
     </nav>
 
-  </div>
+    <div class="logout-container">
+      <button class="logout-button" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Sair</span>
+      </button>
+    </div>

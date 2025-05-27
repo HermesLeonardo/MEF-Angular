@@ -245,3 +245,17 @@ app-sidebar {
   50% { transform: scale(1.2); }
   100% { transform: scale(1); }
 }
+
+
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.custom-checkbox input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+}
