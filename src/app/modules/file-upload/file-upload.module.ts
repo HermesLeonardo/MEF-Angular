@@ -29,7 +29,8 @@ import { SharedModule } from '../../shared/shared.module';
     MatOptionModule,
     MatSelectModule,
     MatTableModule,
-    SharedModule
+    SharedModule,
+
   ]
 })
 export class FileUploadModule { }

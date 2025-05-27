@@ -10,7 +10,6 @@ import { SharedModule } from './shared/shared.module';
 // import { ProfilePageModule } from './modules/home/page/profile-page/profile.module';
 import { FileUploadModule } from './modules/file-upload/file-upload.module';
 
-
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';

@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ViewEncapsulation   } from '@angular/core';
 
 interface UploadedFile {
   name: string;
@@ -25,6 +26,7 @@ interface StoredFile {
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.css'],
   standalone: false,
+  encapsulation: ViewEncapsulation.None
 })
 export class FileUploadComponent implements OnInit {
   displayedColumns: string[] = ['name', 'type', 'date', 'size', 'category', 'actions'];
