@@ -68,6 +68,23 @@ export class FileUploadComponent implements OnInit {
     this.dataSource.filterPredicate = (data: UploadedFile) => this.filterData(data);
   }
 
+  deleteFile(file: UploadedFile) {
+    const storedFiles = this.getStoredFiles();
+    
+    // Match files using original file metadata
+    const updatedFiles = storedFiles.filter(sf => 
+      !(sf.name === file.name && 
+        sf.date === file.date.toISOString() && 
+        sf.sizeBytes === file.raw.size)
+    );
+
+    localStorage.setItem('uploadedFiles', JSON.stringify(updatedFiles));
+    
+    // Update table with new array reference
+    this.dataSource.data = [...updatedFiles.map(sf => this.storedFileToUploadedFile(sf))];
+    this.dataSource._updateChangeSubscription();
+  }
+
   private loadPersistedFiles() {
     const storedFiles = this.getStoredFiles();
     const uploadedFiles = storedFiles.map(sf => this.storedFileToUploadedFile(sf));
@@ -108,14 +125,19 @@ export class FileUploadComponent implements OnInit {
     if (!input.files) return;
 
     const files = Array.from(input.files);
-    this.selectedFiles = files.map(file => ({
-      name: file.name,
-      type: file.type || file.name.split('.').pop() || 'unknown',
-      size: this.formatFileSize(file.size),
-      date: new Date(),
-      category: null,
-      raw: file
-    }));
+    
+    // Add new files to existing selection
+    this.selectedFiles = [
+      ...this.selectedFiles,
+      ...files.map(file => ({
+        name: file.name,
+        type: file.type || file.name.split('.').pop() || 'unknown',
+        size: this.formatFileSize(file.size),
+        date: new Date(),
+        category: null,
+        raw: file
+      }))
+    ];
   }
 
   async uploadFiles() {
@@ -149,6 +171,7 @@ export class FileUploadComponent implements OnInit {
     });
   }
 
+  // Filter methods remain unchanged below
   applyNameFilter(event: Event) {
     this.currentFilters.name = (event.target as HTMLInputElement).value.toLowerCase();
     this.dataSource.filter = JSON.stringify(this.currentFilters);

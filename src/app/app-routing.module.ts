@@ -5,10 +5,13 @@ import { RouterModule, Routes } from '@angular/router';
 // import { LoginComponent } from './modules/login/page/login/login.component';
 // import { ProfileComponent } from './modules/home/page/profile-page/profile.component';
 // import { RegisterComponent } from './modules/login/page/register/register.component';
-// import { FileUploadComponent } from './modules/file-upload/file-upload.component';
+
+import { FileUploadComponent } from './modules/file-upload/file-upload.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
+
+  { path: 'file-upload', component: FileUploadComponent },
 
   // Lazy loading para módulo de login
   {
