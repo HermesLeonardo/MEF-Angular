@@ -55,14 +55,7 @@ export class DashboardHomeComponent implements OnInit {
   }
 
   loadCompanies(): void {
-    this.companyService.getCompanies().subscribe({
-      next: (data) => {
-        this.companies = data;
-      },
-      error: (err) => {
-        console.error('Erro ao buscar empresas', err);
-      },
-    });
+    this.companies = this.companyService.getCompanies();
   }
 
   // Esta função está preparada para futura integração com o backend
