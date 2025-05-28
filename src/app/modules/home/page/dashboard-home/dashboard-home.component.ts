@@ -3,8 +3,6 @@ import { Router } from '@angular/router';
 import { Company } from '../../../../core/models/company.model';
 import { CompanyService } from '../../../../core/services/api/company.service';
 import { AddCompanyModalComponent } from '../company-modal/add-company-modal.component';
-import { AuthService } from '../../../../core/services/api/auth.service';
-import { Profile } from '../../../../core/models/profile.model';
 
 type CompanyType = 'company' | 'client';
 
@@ -31,10 +29,7 @@ interface FileItem {
   styleUrls: ['./dashboard-home.component.css'],
 })
 export class DashboardHomeComponent implements OnInit {
-  constructor(private router: Router,
-    private companyService: CompanyService,
-    private authService: AuthService,
-  ) { }
+  constructor(private router: Router, private companyService: CompanyService) { }
 
   searchQuery = '';
   searchFile = '';
@@ -47,25 +42,20 @@ export class DashboardHomeComponent implements OnInit {
   companies: Company[] = [];
   files: FileItem[] = [];
 
-  usuarioLogado: Profile | null = null;
+  usuarioLogado: any;
 
   ngOnInit(): void {
-    this.usuarioLogado = this.authService.obterUsuario();
+    const data = localStorage.getItem('usuario');
+    if (data) {
+      this.usuarioLogado = JSON.parse(data);
+    }
 
     this.loadCompanies();
-    this.loadFiles();
+    this.loadFiles(); // Aqui futuramente entra a chamada pro backend
   }
 
-
   loadCompanies(): void {
-    this.companyService.getCompanies().subscribe({
-      next: (data) => {
-        this.companies = data;
-      },
-      error: (err) => {
-        console.error('Erro ao buscar empresas', err);
-      },
-    });
+    this.companies = this.companyService.getCompanies();
   }
 
   // Esta função está preparada para futura integração com o backend
