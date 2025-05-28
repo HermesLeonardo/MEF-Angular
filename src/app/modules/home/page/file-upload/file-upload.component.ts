@@ -36,6 +36,7 @@ export class FileUploadComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('fileInput') fileInputRef!: ElementRef;
   currentCompany: any;
+  originalFileNameMap = new Map<UploadedFile, string>();
 
   constructor(private route: ActivatedRoute) { }
 
@@ -48,7 +49,6 @@ export class FileUploadComponent implements OnInit {
       this.loadPersistedFiles();
     });
   }
-
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -66,10 +66,60 @@ export class FileUploadComponent implements OnInit {
     this.dataSource.filterPredicate = (data: UploadedFile) => this.filterData(data);
   }
 
+  startEditing(file: UploadedFile) {
+    file.editing = true;
+    file.editingName = file.name;
+    file.editingCategory = file.category;
+    this.originalFileNameMap.set(file, file.name);
+  }
+
+  cancelEditing(file: UploadedFile) {
+    file.editing = false;
+    this.originalFileNameMap.delete(file);
+  }
+
+  saveEditing(file: UploadedFile) {
+    if (file.editingName && file.editingName.trim()) {
+      const originalName = this.originalFileNameMap.get(file) || file.name;
+      
+      file.name = file.editingName.trim();
+      file.category = file.editingCategory ?? null;
+      
+      const newFile = new File([file.raw], file.name, {
+        type: file.raw.type,
+        lastModified: file.raw.lastModified
+      });
+      file.raw = newFile;
+
+      this.updateStoredFile(file, originalName);
+    }
+    
+    file.editing = false;
+    this.originalFileNameMap.delete(file);
+  }
+
+  private updateStoredFile(file: UploadedFile, originalName: string) {
+    const allFilesRaw = localStorage.getItem('uploadedFiles');
+    let allFiles: StoredFile[] = allFilesRaw ? JSON.parse(allFilesRaw) : [];
+    
+    const index = allFiles.findIndex(f => 
+      f.companyId === this.companyId &&
+      f.name === originalName &&
+      f.date === file.date.toISOString() &&
+      f.sizeBytes === file.raw.size
+    );
+    
+    if (index !== -1) {
+      allFiles[index].name = file.name;
+      allFiles[index].category = file.category;
+      localStorage.setItem('uploadedFiles', JSON.stringify(allFiles));
+      
+      this.dataSource.data = [...this.dataSource.data];
+    }
+  }
+
   deleteFile(file: UploadedFile) {
     const storedFiles = this.getStoredFiles();
-
-    // Match files using original file metadata
     const updatedFiles = storedFiles.filter(sf =>
       !(sf.name === file.name &&
         sf.date === file.date.toISOString() &&
@@ -77,8 +127,6 @@ export class FileUploadComponent implements OnInit {
     );
 
     localStorage.setItem('uploadedFiles', JSON.stringify(updatedFiles));
-
-    // Update table with new array reference
     this.dataSource.data = [...updatedFiles.map(sf => this.storedFileToUploadedFile(sf))];
     this.dataSource._updateChangeSubscription();
   }
@@ -109,14 +157,14 @@ export class FileUploadComponent implements OnInit {
       lastModified: new Date(storedFile.date).getTime()
     });
 
-    return {
-      name: storedFile.name,
-      type: storedFile.type,
-      size: this.formatFileSize(storedFile.sizeBytes),
-      date: new Date(storedFile.date),
-      category: storedFile.category,
-      raw: file
-    };
+    return new UploadedFile(
+      storedFile.name,
+      storedFile.type,
+      this.formatFileSize(storedFile.sizeBytes),
+      new Date(storedFile.date),
+      storedFile.category,
+      file
+    );
   }
 
   onFileSelect(event: Event) {
@@ -124,38 +172,34 @@ export class FileUploadComponent implements OnInit {
     if (!input.files) return;
 
     const files = Array.from(input.files);
-
-    // Add new files to existing selection
     this.selectedFiles = [
       ...this.selectedFiles,
-      ...files.map(file => ({
-        name: file.name,
-        type: file.type || file.name.split('.').pop() || 'unknown',
-        size: this.formatFileSize(file.size),
-        date: new Date(),
-        category: null,
-        raw: file
-      }))
+      ...files.map(file => new UploadedFile(
+        file.name,
+        file.type || file.name.split('.').pop() || 'unknown',
+        this.formatFileSize(file.size),
+        new Date(),
+        null,
+        file
+      ))
     ];
   }
 
   async uploadFiles() {
     const newStoredFiles = await Promise.all(
-      this.selectedFiles.map(async (file) => ({
-        name: file.name,
-        type: file.type,
-        sizeBytes: file.raw.size,
-        date: file.date.toISOString(),
-        category: file.category,
-        content: await this.readFileAsBase64(file.raw),
-        companyId: this.companyId
-      }))
+      this.selectedFiles.map(async (file) => new StoredFile(
+        file.name,
+        file.type,
+        file.raw.size,
+        file.date.toISOString(),
+        file.category,
+        await this.readFileAsBase64(file.raw),
+        this.companyId
+      ))
     );
 
     const allFilesRaw = localStorage.getItem('uploadedFiles');
     const allFiles: StoredFile[] = allFilesRaw ? JSON.parse(allFilesRaw) : [];
-
-    // Remove duplicatas da empresa atual com base nos novos arquivos
     const cleanedCompanyFiles = allFiles.filter(existing =>
       existing.companyId !== this.companyId ||
       !newStoredFiles.some(newFile =>
@@ -167,8 +211,6 @@ export class FileUploadComponent implements OnInit {
 
     const updatedFiles = [...cleanedCompanyFiles, ...newStoredFiles];
     localStorage.setItem('uploadedFiles', JSON.stringify(updatedFiles));
-
-    // Atualiza visual com os arquivos da empresa atual
     this.dataSource.data = updatedFiles
       .filter(f => f.companyId === this.companyId)
       .map(sf => this.storedFileToUploadedFile(sf));
@@ -177,7 +219,6 @@ export class FileUploadComponent implements OnInit {
     this.fileInputRef.nativeElement.value = '';
     this.dataSource.filter = JSON.stringify(this.currentFilters);
   }
-
 
   private readFileAsBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -188,7 +229,6 @@ export class FileUploadComponent implements OnInit {
     });
   }
 
-  // Filter methods remain unchanged below
   applyNameFilter(event: Event) {
     this.currentFilters.name = (event.target as HTMLInputElement).value.toLowerCase();
     this.dataSource.filter = JSON.stringify(this.currentFilters);

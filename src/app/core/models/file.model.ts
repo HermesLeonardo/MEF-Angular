@@ -1,4 +1,8 @@
 export class UploadedFile {
+  editing?: boolean;
+  editingName?: string;
+  editingCategory?: string | null;
+
   constructor(
     public name: string,
     public type: string,

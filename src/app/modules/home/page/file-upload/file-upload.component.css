@@ -249,3 +249,24 @@ button.mat-mdc-raised-button.mat-primary mat-icon {
   font-weight: bold !important;
   border-bottom: 2px solid #334155 !important;
 }
+
+
+.action-btn.edit-btn {
+  background-color: #f6ad55; 
+  margin-bottom: 4px;
+}
+
+.action-btn.save-btn {
+  background-color: var(--accent-color); 
+  margin-bottom: 4px;
+}
+
+.action-btn.cancel-btn {
+  background-color: #e53e3e; 
+  margin-bottom: 4px;
+}
+
+.edit-actions {
+  display: flex;
+  flex-direction: column;
+}
