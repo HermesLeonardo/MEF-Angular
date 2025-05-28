@@ -5,6 +5,8 @@ import { IconInputComponent } from './components/icon-input/icon-input.component
 import { CustomButtonComponent } from './components/custom-button/custom-button.component';
 import { CompanyCardComponent } from './components/company-card/company-card.component';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+
 
 @NgModule({
   declarations: [
@@ -13,7 +15,7 @@ import { FormsModule } from '@angular/forms';
     CustomButtonComponent,
     CompanyCardComponent,
   ],
-  imports: [CommonModule,],
+  imports: [CommonModule, MatIconModule, FormsModule],
   exports: [
     SidebarComponent,
     IconInputComponent,

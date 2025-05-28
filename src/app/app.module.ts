@@ -24,7 +24,6 @@ import { FormsModule } from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
-import { provideNgxMask } from 'ngx-mask';
 
 
 
@@ -58,7 +57,6 @@ import { provideNgxMask } from 'ngx-mask';
     HttpClientModule,
 
   ],
-  providers: [provideNgxMask()],
   bootstrap: [AppComponent]
 })
 

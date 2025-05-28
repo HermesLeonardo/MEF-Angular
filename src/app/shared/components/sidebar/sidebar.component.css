@@ -120,19 +120,19 @@
 }
 
 .sidebar-menu button {
-  background-color: transparent;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.25rem;
-  border-radius: 10px;
-  text-align: left;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  font-size: 1rem;
+  gap: 10px;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  padding: 12px 20px;
   width: 100%;
+  text-align: left;
+  transition: background 0.3s;
 }
 
 .sidebar-menu button:hover {
@@ -144,17 +144,40 @@
   font-weight: bold;
 }
 
+.sidebar-menu mat-icon {
+  font-size: 20px;
+}
+
+
+
 
 .logout-button {
-  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
   border: none;
-  color: #ccc;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 14px;
   cursor: pointer;
-  margin-left: auto;
-  font-size: 1.2rem;
-  transition: color 0.2s;
+  padding: 10px 20px;
+  transition: color 0.3s;
+}
+
+.logout-button mat-icon {
+  font-size: 18px;
 }
 
 .logout-button:hover {
-  color: #fff;
+  color: #f87171;
+}
+
+.logout-container {
+  position: absolute;
+  bottom: 24px; /* aumenta para descer mais */
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
