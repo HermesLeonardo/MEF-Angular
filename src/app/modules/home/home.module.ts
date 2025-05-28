@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { DashboardHomeComponent } from './page/dashboard-home/dashboard-home.component';
 import { SharedModule } from '../../shared/shared.module';
 
+import { AddCompanyModalComponent } from './page/company-modal/add-company-modal.component';
+
 import { ProfilePageModule } from './page/profile-page/profile.module';
 
 import { ConfigPageComponent } from './page/config-page/config-page.component';
@@ -18,7 +20,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @NgModule({
-  declarations: [DashboardHomeComponent, ConfigPageComponent],
+  declarations: [DashboardHomeComponent, ConfigPageComponent, AddCompanyModalComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -31,6 +33,7 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
     MatButtonModule,
     ReactiveFormsModule,
     NgxMaskDirective,
+    
 
   ],
   providers: [provideNgxMask()],

@@ -1,11 +1,13 @@
+
 export interface Profile {
   id: number;
-  name: string;
+  nome: string;
   email: string;
   password: string;
   created_at: Date;
   photo: string | null;
   telefone: string | null;
   cpf: string | null;
+  cnpj: string | null;
   role: string;
 }
