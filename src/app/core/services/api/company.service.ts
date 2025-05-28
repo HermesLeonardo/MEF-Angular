@@ -1,33 +1,42 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { Company } from '../../models/company.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompanyService {
-  private apiUrl = 'http://localhost:3000'; 
+  private storageKey = 'empresas';
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
-  getCompanies(): Observable<Company[]> {
-    return this.http.get<Company[]>(`${this.apiUrl}/companies`);
+  getCompanies(): Company[] {
+    const data = localStorage.getItem(this.storageKey);
+    return data ? JSON.parse(data) : [];
   }
 
-  getCompanyById(id: number): Observable<Company> {
-    return this.http.get<Company>(`${this.apiUrl}/companies/${id}`);
+  getCompanyById(id: number): Company | undefined {
+    return this.getCompanies().find(c => c.id === id);
   }
 
-  createCompany(company: Company): Observable<Company> {
-    return this.http.post<Company>(`${this.apiUrl}/companies`, company);
+  createCompany(company: Company): void {
+    const companies = this.getCompanies();
+    companies.push(company);
+    this.saveCompanies(companies);
   }
 
-  updateCompany(id: number, company: Company): Observable<Company> {
-    return this.http.put<Company>(`${this.apiUrl}/companies/${id}`, company);
+  updateCompany(id: number, updatedCompany: Company): void {
+    const companies = this.getCompanies().map(company =>
+      company.id === id ? { ...updatedCompany, updated_at: new Date().toISOString() } : company
+    );
+    this.saveCompanies(companies);
   }
 
-  deleteCompany(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/companies/${id}`);
+  deleteCompany(id: number): void {
+    const companies = this.getCompanies().filter(c => c.id !== id);
+    this.saveCompanies(companies);
+  }
+
+  private saveCompanies(companies: Company[]): void {
+    localStorage.setItem(this.storageKey, JSON.stringify(companies));
   }
 }
