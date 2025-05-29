@@ -1,15 +1,18 @@
 <div class="container">
   <app-sidebar></app-sidebar>
 
+  <div class="header-section">
+    <h1 class="company-name">Empresa: {{ currentCompany?.name }}</h1>
+
     <h2>Upload Documents</h2>
-  
+
     <!-- Upload Section -->
     <div class="upload-section">
       <input type="file" multiple #fileInput (change)="onFileSelect($event)" hidden>
       <button mat-raised-button color="primary" (click)="fileInput.click()">
         <mat-icon>upload</mat-icon> Select Files
       </button>
-  
+
       <!-- Selected Files List -->
       <div class="selected-files" *ngIf="selectedFiles.length">
         <div class="file-item" *ngFor="let file of selectedFiles">
@@ -28,9 +31,9 @@
         </button>
       </div>
     </div>
-  
+
     <!-- Uploaded Files Table with Header Filters -->
-    <table mat-table [dataSource]="dataSource" matSort class="files-table">
+    <table mat-table [dataSource]="dataSource" matSort class="upload-table">
       <!-- Name Column -->
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -39,9 +42,12 @@
             <input (input)="applyNameFilter($event)" placeholder="Filter...">
           </div>
         </th>
-        <td mat-cell *matCellDef="let element"> {{ element.name }} </td>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="!element.editing">{{ element.name }}</span>
+          <input *ngIf="element.editing" [(ngModel)]="element.editingName" type="text">
+        </td>
       </ng-container>
-  
+
       <!-- Type Column -->
       <ng-container matColumnDef="type">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -52,7 +58,7 @@
         </th>
         <td mat-cell *matCellDef="let element"> {{ element.type }} </td>
       </ng-container>
-  
+
       <!-- Date Column -->
       <ng-container matColumnDef="date">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -63,7 +69,7 @@
         </th>
         <td mat-cell *matCellDef="let element"> {{ element.date | date }} </td>
       </ng-container>
-  
+
       <!-- Size Column -->
       <ng-container matColumnDef="size">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -78,7 +84,7 @@
         </th>
         <td mat-cell *matCellDef="let element"> {{ element.size }} </td>
       </ng-container>
-  
+
       <!-- Category Column -->
       <ng-container matColumnDef="category">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -87,19 +93,36 @@
             <input (input)="applyCategoryFilter($event)" placeholder="Filter...">
           </div>
         </th>
-        <td mat-cell *matCellDef="let element"> {{ element.category || 'Uncategorized' }} </td>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="!element.editing">{{ element.category || 'Uncategorized' }}</span>
+          <mat-form-field *ngIf="element.editing">
+            <mat-label>Category</mat-label>
+            <mat-select [(value)]="element.editingCategory">
+              <mat-option *ngFor="let category of categories" [value]="category">
+                {{ category }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
       </ng-container>
-  
+
       <!-- Actions Column -->
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Actions </th>
         <td mat-cell *matCellDef="let element">
-          <button class="action-btn download-btn" (click)="downloadFile(element)">Download</button>
-          <button class="action-btn preview-btn" (click)="previewFile(element)">Preview</button>
-          <button class="action-btn delete-btn" (click)="deleteFile(element)">Delete</button>
+          <div *ngIf="!element.editing">
+            <button class="action-btn download-btn" (click)="downloadFile(element)">Download</button>
+            <button class="action-btn preview-btn" (click)="previewFile(element)">Preview</button>
+            <button class="action-btn delete-btn" (click)="deleteFile(element)">Delete</button>
+            <button class="action-btn edit-btn" (click)="startEditing(element)">Edit</button>
+          </div>
+          <div *ngIf="element.editing" class="edit-actions">
+            <button class="action-btn save-btn" (click)="saveEditing(element)">Save</button>
+            <button class="action-btn cancel-btn" (click)="cancelEditing(element)">Cancel</button>
+          </div>
         </td>
       </ng-container>
-  
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>

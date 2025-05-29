@@ -1,25 +1,9 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ViewEncapsulation   } from '@angular/core';
-
-interface UploadedFile {
-  name: string;
-  type: string;
-  size: string;
-  date: Date;
-  category: string | null;
-  raw: File;
-}
-
-interface StoredFile {
-  name: string;
-  type: string;
-  sizeBytes: number;
-  date: string;
-  category: string | null;
-  content: string;
-}
+import { ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { UploadedFile, StoredFile } from '../../../../core/models/file.model';
 
 @Component({
   selector: 'app-file-upload',
@@ -29,6 +13,8 @@ interface StoredFile {
   encapsulation: ViewEncapsulation.None
 })
 export class FileUploadComponent implements OnInit {
+  companyId!: number;
+
   displayedColumns: string[] = ['name', 'type', 'date', 'size', 'category', 'actions'];
   dataSource = new MatTableDataSource<UploadedFile>([]);
   selectedFiles: UploadedFile[] = [];
@@ -38,7 +24,7 @@ export class FileUploadComponent implements OnInit {
     'Folha de Pagamento',
     'Certificado Digital'
   ];
-  
+
   currentFilters: any = {
     name: '',
     type: '',
@@ -46,18 +32,28 @@ export class FileUploadComponent implements OnInit {
     size: '',
     category: ''
   };
-  
+
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('fileInput') fileInputRef!: ElementRef;
+  currentCompany: any;
+  originalFileNameMap = new Map<UploadedFile, string>();
+
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.loadPersistedFiles();
+    this.route.paramMap.subscribe(params => {
+      this.companyId = Number(params.get('id'));
+      const companiesStr = localStorage.getItem('empresas');
+      const companies = companiesStr ? JSON.parse(companiesStr) : [];
+      this.currentCompany = companies.find((c: any) => c.id === this.companyId);
+      this.loadPersistedFiles();
+    });
   }
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.sortingDataAccessor = (item: UploadedFile, property: string) => {
-      switch(property) {
+      switch (property) {
         case 'name': return item.name.toLowerCase();
         case 'date': return new Date(item.date).getTime();
         case 'size': return this.parseSize(item.size);
@@ -66,23 +62,71 @@ export class FileUploadComponent implements OnInit {
         default: return '';
       }
     };
-    
+
     this.dataSource.filterPredicate = (data: UploadedFile) => this.filterData(data);
+  }
+
+  startEditing(file: UploadedFile) {
+    file.editing = true;
+    file.editingName = file.name;
+    file.editingCategory = file.category;
+    this.originalFileNameMap.set(file, file.name);
+  }
+
+  cancelEditing(file: UploadedFile) {
+    file.editing = false;
+    this.originalFileNameMap.delete(file);
+  }
+
+  saveEditing(file: UploadedFile) {
+    if (file.editingName && file.editingName.trim()) {
+      const originalName = this.originalFileNameMap.get(file) || file.name;
+      
+      file.name = file.editingName.trim();
+      file.category = file.editingCategory ?? null;
+      
+      const newFile = new File([file.raw], file.name, {
+        type: file.raw.type,
+        lastModified: file.raw.lastModified
+      });
+      file.raw = newFile;
+
+      this.updateStoredFile(file, originalName);
+    }
+    
+    file.editing = false;
+    this.originalFileNameMap.delete(file);
+  }
+
+  private updateStoredFile(file: UploadedFile, originalName: string) {
+    const allFilesRaw = localStorage.getItem('uploadedFiles');
+    let allFiles: StoredFile[] = allFilesRaw ? JSON.parse(allFilesRaw) : [];
+    
+    const index = allFiles.findIndex(f => 
+      f.companyId === this.companyId &&
+      f.name === originalName &&
+      f.date === file.date.toISOString() &&
+      f.sizeBytes === file.raw.size
+    );
+    
+    if (index !== -1) {
+      allFiles[index].name = file.name;
+      allFiles[index].category = file.category;
+      localStorage.setItem('uploadedFiles', JSON.stringify(allFiles));
+      
+      this.dataSource.data = [...this.dataSource.data];
+    }
   }
 
   deleteFile(file: UploadedFile) {
     const storedFiles = this.getStoredFiles();
-    
-    // Match files using original file metadata
-    const updatedFiles = storedFiles.filter(sf => 
-      !(sf.name === file.name && 
-        sf.date === file.date.toISOString() && 
+    const updatedFiles = storedFiles.filter(sf =>
+      !(sf.name === file.name &&
+        sf.date === file.date.toISOString() &&
         sf.sizeBytes === file.raw.size)
     );
 
     localStorage.setItem('uploadedFiles', JSON.stringify(updatedFiles));
-    
-    // Update table with new array reference
     this.dataSource.data = [...updatedFiles.map(sf => this.storedFileToUploadedFile(sf))];
     this.dataSource._updateChangeSubscription();
   }
@@ -95,7 +139,8 @@ export class FileUploadComponent implements OnInit {
 
   private getStoredFiles(): StoredFile[] {
     const storedFilesStr = localStorage.getItem('uploadedFiles');
-    return storedFilesStr ? JSON.parse(storedFilesStr) : [];
+    const allFiles: StoredFile[] = storedFilesStr ? JSON.parse(storedFilesStr) : [];
+    return allFiles.filter(f => f.companyId === this.companyId);
   }
 
   private storedFileToUploadedFile(storedFile: StoredFile): UploadedFile {
@@ -107,19 +152,19 @@ export class FileUploadComponent implements OnInit {
     }
     const byteArray = new Uint8Array(byteNumbers);
     const blob = new Blob([byteArray], { type: storedFile.type });
-    const file = new File([blob], storedFile.name, { 
+    const file = new File([blob], storedFile.name, {
       type: storedFile.type,
       lastModified: new Date(storedFile.date).getTime()
     });
 
-    return {
-      name: storedFile.name,
-      type: storedFile.type,
-      size: this.formatFileSize(storedFile.sizeBytes),
-      date: new Date(storedFile.date),
-      category: storedFile.category,
-      raw: file
-    };
+    return new UploadedFile(
+      storedFile.name,
+      storedFile.type,
+      this.formatFileSize(storedFile.sizeBytes),
+      new Date(storedFile.date),
+      storedFile.category,
+      file
+    );
   }
 
   onFileSelect(event: Event) {
@@ -127,38 +172,49 @@ export class FileUploadComponent implements OnInit {
     if (!input.files) return;
 
     const files = Array.from(input.files);
-    
-    // Add new files to existing selection
     this.selectedFiles = [
       ...this.selectedFiles,
-      ...files.map(file => ({
-        name: file.name,
-        type: file.type || file.name.split('.').pop() || 'unknown',
-        size: this.formatFileSize(file.size),
-        date: new Date(),
-        category: null,
-        raw: file
-      }))
+      ...files.map(file => new UploadedFile(
+        file.name,
+        file.type || file.name.split('.').pop() || 'unknown',
+        this.formatFileSize(file.size),
+        new Date(),
+        null,
+        file
+      ))
     ];
   }
 
   async uploadFiles() {
     const newStoredFiles = await Promise.all(
-      this.selectedFiles.map(async (file) => ({
-        name: file.name,
-        type: file.type,
-        sizeBytes: file.raw.size,
-        date: file.date.toISOString(),
-        category: file.category,
-        content: await this.readFileAsBase64(file.raw)
-      }))
+      this.selectedFiles.map(async (file) => new StoredFile(
+        file.name,
+        file.type,
+        file.raw.size,
+        file.date.toISOString(),
+        file.category,
+        await this.readFileAsBase64(file.raw),
+        this.companyId
+      ))
     );
 
-    const existingStoredFiles = this.getStoredFiles();
-    const allStoredFiles = [...existingStoredFiles, ...newStoredFiles];
-    localStorage.setItem('uploadedFiles', JSON.stringify(allStoredFiles));
+    const allFilesRaw = localStorage.getItem('uploadedFiles');
+    const allFiles: StoredFile[] = allFilesRaw ? JSON.parse(allFilesRaw) : [];
+    const cleanedCompanyFiles = allFiles.filter(existing =>
+      existing.companyId !== this.companyId ||
+      !newStoredFiles.some(newFile =>
+        newFile.name === existing.name &&
+        newFile.date === existing.date &&
+        newFile.sizeBytes === existing.sizeBytes
+      )
+    );
 
-    this.dataSource.data = allStoredFiles.map(sf => this.storedFileToUploadedFile(sf));
+    const updatedFiles = [...cleanedCompanyFiles, ...newStoredFiles];
+    localStorage.setItem('uploadedFiles', JSON.stringify(updatedFiles));
+    this.dataSource.data = updatedFiles
+      .filter(f => f.companyId === this.companyId)
+      .map(sf => this.storedFileToUploadedFile(sf));
+
     this.selectedFiles = [];
     this.fileInputRef.nativeElement.value = '';
     this.dataSource.filter = JSON.stringify(this.currentFilters);
@@ -173,7 +229,6 @@ export class FileUploadComponent implements OnInit {
     });
   }
 
-  // Filter methods remain unchanged below
   applyNameFilter(event: Event) {
     this.currentFilters.name = (event.target as HTMLInputElement).value.toLowerCase();
     this.dataSource.filter = JSON.stringify(this.currentFilters);
@@ -229,13 +284,13 @@ export class FileUploadComponent implements OnInit {
       data.type.toLowerCase().includes(this.currentFilters.type) &&
       (this.currentFilters.date === '' || this.isSameDay(filterDate, fileDate)) &&
       this.checkSizeFilter(sizeInBytes) &&
-      (data.category?.toLowerCase().includes(this.currentFilters.category) || 
-       (this.currentFilters.category === '' && !data.category))
+      (data.category?.toLowerCase().includes(this.currentFilters.category) ||
+        (this.currentFilters.category === '' && !data.category))
     );
   }
 
   private checkSizeFilter(sizeInBytes: number): boolean {
-    switch(this.currentFilters.size) {
+    switch (this.currentFilters.size) {
       case 'small': return sizeInBytes < 1000000;
       case 'medium': return sizeInBytes >= 1000000 && sizeInBytes <= 5000000;
       default: return true;
@@ -253,7 +308,7 @@ export class FileUploadComponent implements OnInit {
   private parseSize(sizeString: string): number {
     const [value, unit] = sizeString.split(' ');
     const numericValue = parseFloat(value);
-    switch(unit) {
+    switch (unit) {
       case 'KB': return numericValue * 1024;
       case 'MB': return numericValue * 1024 * 1024;
       default: return numericValue;
@@ -262,7 +317,7 @@ export class FileUploadComponent implements OnInit {
 
   private isSameDay(d1: Date, d2: Date): boolean {
     return d1.getFullYear() === d2.getFullYear() &&
-           d1.getMonth() === d2.getMonth() &&
-           d1.getDate() === d2.getDate();
+      d1.getMonth() === d2.getMonth() &&
+      d1.getDate() === d2.getDate();
   }
 }

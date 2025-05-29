@@ -11,7 +11,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from '../../../../shared/shared.module';
 
 
 

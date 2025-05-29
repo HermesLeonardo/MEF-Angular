@@ -218,3 +218,105 @@ mat-form-field .mat-select-value {
     margin: 4px 0;
   }
 }
+
+
+/* Força texto branco no botão de upload */
+button.mat-mdc-raised-button.mat-primary {
+  color: #ffffff !important;
+}
+
+/* Corrige ícone também, se necessário */
+button.mat-mdc-raised-button.mat-primary mat-icon {
+  color: #ffffff !important;
+}
+
+
+/* Força fundo escuro nas linhas da tabela MDC */
+.mdc-data-table__content tr {
+  background-color: #1e293b !important;
+}
+
+.mdc-data-table__content td {
+  background-color: #1e293b !important;
+  color: #e2e8f0 !important;
+  border-bottom: 1px solid #334155 !important;
+}
+
+.mdc-data-table__header-row,
+.mdc-data-table__header-cell {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  font-weight: bold !important;
+  border-bottom: 2px solid #334155 !important;
+}
+
+
+.action-btn.edit-btn {
+  background-color: #f6ad55; 
+  margin-bottom: 4px;
+}
+
+.action-btn.save-btn {
+  background-color: var(--accent-color); 
+  margin-bottom: 4px;
+}
+
+.action-btn.cancel-btn {
+  background-color: #e53e3e; 
+  margin-bottom: 4px;
+}
+
+.edit-actions {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+/* Input de texto (edição de nome) */
+.upload-table input[type="text"] {
+  background-color: var(--background-grey);
+  border: 1px solid var(--border-color);
+  color: var(--text-medium);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+
+
+
+/* Painel do mat-select (dropdown) */
+.mat-mdc-select-panel {
+  background-color: #1e293b !important;
+  color: #e2e8f0 !important;
+  border: 1px solid #334155 !important;
+  border-radius: 6px !important;
+}
+
+/* Itens dentro do dropdown */
+.mat-mdc-option {
+  background-color: transparent !important;
+  color: #e2e8f0 !important;
+}
+
+.mat-mdc-option:hover {
+  background-color: #334155 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

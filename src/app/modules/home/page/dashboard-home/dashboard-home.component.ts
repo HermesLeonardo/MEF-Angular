@@ -58,6 +58,7 @@ export class DashboardHomeComponent implements OnInit {
     this.companies = this.companyService.getCompanies();
   }
 
+
   // Esta função está preparada para futura integração com o backend
   loadFiles(): void {
     this.files = [
@@ -110,6 +111,7 @@ export class DashboardHomeComponent implements OnInit {
   goToCompany(id: number) {
     this.router.navigate(['/file-upload', id]);
   }
+
 
   fecharModal() {
     this.modalAberto = false;
