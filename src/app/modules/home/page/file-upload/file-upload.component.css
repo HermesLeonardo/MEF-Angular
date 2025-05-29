@@ -270,3 +270,53 @@ button.mat-mdc-raised-button.mat-primary mat-icon {
   display: flex;
   flex-direction: column;
 }
+
+
+
+/* Input de texto (edição de nome) */
+.upload-table input[type="text"] {
+  background-color: var(--background-grey);
+  border: 1px solid var(--border-color);
+  color: var(--text-medium);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+
+
+
+/* Painel do mat-select (dropdown) */
+.mat-mdc-select-panel {
+  background-color: #1e293b !important;
+  color: #e2e8f0 !important;
+  border: 1px solid #334155 !important;
+  border-radius: 6px !important;
+}
+
+/* Itens dentro do dropdown */
+.mat-mdc-option {
+  background-color: transparent !important;
+  color: #e2e8f0 !important;
+}
+
+.mat-mdc-option:hover {
+  background-color: #334155 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
