@@ -4,6 +4,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UploadedFile, StoredFile } from '../../../../core/models/file.model';
+import { RecentFilesService } from '../../../../core/services/api/recent-files.service';
+import { RecentFile } from '../../../../core/models/file.model';
 
 @Component({
   selector: 'app-file-upload',
@@ -15,7 +17,7 @@ import { UploadedFile, StoredFile } from '../../../../core/models/file.model';
 export class FileUploadComponent implements OnInit {
   companyId!: number;
 
-  displayedColumns: string[] = ['name', 'type', 'date', 'size', 'category', 'actions'];
+  displayedColumns: string[] = ['name', 'type', 'date', 'size', 'category', 'status', 'actions'];
   dataSource = new MatTableDataSource<UploadedFile>([]);
   selectedFiles: UploadedFile[] = [];
   categories = [
@@ -24,6 +26,8 @@ export class FileUploadComponent implements OnInit {
     'Folha de Pagamento',
     'Certificado Digital'
   ];
+  status: 'Ativo' | 'Inativo' | undefined;
+
 
   currentFilters: any = {
     name: '',
@@ -38,7 +42,9 @@ export class FileUploadComponent implements OnInit {
   currentCompany: any;
   originalFileNameMap = new Map<UploadedFile, string>();
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(
+    private route: ActivatedRoute,
+    private recentFilesService: RecentFilesService) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -81,10 +87,10 @@ export class FileUploadComponent implements OnInit {
   saveEditing(file: UploadedFile) {
     if (file.editingName && file.editingName.trim()) {
       const originalName = this.originalFileNameMap.get(file) || file.name;
-      
+
       file.name = file.editingName.trim();
       file.category = file.editingCategory ?? null;
-      
+
       const newFile = new File([file.raw], file.name, {
         type: file.raw.type,
         lastModified: file.raw.lastModified
@@ -93,7 +99,7 @@ export class FileUploadComponent implements OnInit {
 
       this.updateStoredFile(file, originalName);
     }
-    
+
     file.editing = false;
     this.originalFileNameMap.delete(file);
   }
@@ -101,19 +107,19 @@ export class FileUploadComponent implements OnInit {
   private updateStoredFile(file: UploadedFile, originalName: string) {
     const allFilesRaw = localStorage.getItem('uploadedFiles');
     let allFiles: StoredFile[] = allFilesRaw ? JSON.parse(allFilesRaw) : [];
-    
-    const index = allFiles.findIndex(f => 
+
+    const index = allFiles.findIndex(f =>
       f.companyId === this.companyId &&
       f.name === originalName &&
       f.date === file.date.toISOString() &&
       f.sizeBytes === file.raw.size
     );
-    
+
     if (index !== -1) {
       allFiles[index].name = file.name;
       allFiles[index].category = file.category;
       localStorage.setItem('uploadedFiles', JSON.stringify(allFiles));
-      
+
       this.dataSource.data = [...this.dataSource.data];
     }
   }
@@ -211,14 +217,33 @@ export class FileUploadComponent implements OnInit {
 
     const updatedFiles = [...cleanedCompanyFiles, ...newStoredFiles];
     localStorage.setItem('uploadedFiles', JSON.stringify(updatedFiles));
+
     this.dataSource.data = updatedFiles
       .filter(f => f.companyId === this.companyId)
       .map(sf => this.storedFileToUploadedFile(sf));
 
+    // 🔁 Atualiza os arquivos recentes
+    this.selectedFiles.forEach(f => {
+      const recent = new RecentFile(
+        f.name,
+        f.type,
+        f.size,
+        f.date,
+        f.category,
+        f.raw,
+        this.currentCompany?.name || 'Desconhecido',
+        'Ativo',
+        this.companyId
+      );
+      this.recentFilesService.addFile(recent);
+    });
+
+    this.dataSource._updateChangeSubscription(); // ← força atualização visual
     this.selectedFiles = [];
     this.fileInputRef.nativeElement.value = '';
     this.dataSource.filter = JSON.stringify(this.currentFilters);
   }
+
 
   private readFileAsBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -320,4 +345,44 @@ export class FileUploadComponent implements OnInit {
       d1.getMonth() === d2.getMonth() &&
       d1.getDate() === d2.getDate();
   }
+
+
+
+  toggleStatus(file: UploadedFile) {
+    file.status = file.status === 'Ativo' ? 'Inativo' : 'Ativo';
+
+    // Atualiza no localStorage (uploadedFiles)
+    const allRaw = localStorage.getItem('uploadedFiles');
+    if (!allRaw) return;
+
+    const allFiles: StoredFile[] = JSON.parse(allRaw);
+    const targetIndex = allFiles.findIndex(f =>
+      f.companyId === this.companyId &&
+      f.name === file.name &&
+      f.date === file.date.toISOString() &&
+      f.sizeBytes === file.raw.size
+    );
+
+    if (targetIndex !== -1) {
+      allFiles[targetIndex].status = file.status;
+      localStorage.setItem('uploadedFiles', JSON.stringify(allFiles));
+    }
+
+    // Atualiza também no RecentFilesService
+    const recentRaw = localStorage.getItem('recentFiles');
+    if (recentRaw) {
+      const recentFiles = JSON.parse(recentRaw);
+      const match = recentFiles.find((r: any) =>
+        r.name === file.name && r.companyId === this.companyId
+      );
+      if (match) {
+        match.status = file.status;
+        localStorage.setItem('recentFiles', JSON.stringify(recentFiles));
+      }
+    }
+  }
+
+
+
+
 }
