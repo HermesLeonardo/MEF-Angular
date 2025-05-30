@@ -4,6 +4,7 @@ export class UploadedFile {
   editingCategory?: string | null;
 
   constructor(
+    public id: string,
     public name: string,
     public type: string,
     public size: string,
@@ -11,7 +12,7 @@ export class UploadedFile {
     public category: string | null,
     public raw: File,
     public status: 'Ativo' | 'Inativo' = 'Ativo' // ← agora parte do constructor
-  ) {}
+  ) { }
 }
 
 export class StoredFile {
@@ -20,6 +21,7 @@ export class StoredFile {
   }
 
   constructor(
+    public id: string,
     public name: string,
     public type: string,
     public sizeBytes: number,
@@ -28,21 +30,23 @@ export class StoredFile {
     public content: string,
     public companyId: number,
     public status: 'Ativo' | 'Inativo' = 'Ativo' // ← novo campo persistido
-  ) {}
+  ) { }
 }
 
 export class RecentFile extends UploadedFile {
   constructor(
+    public override id: string,
     name: string,
     type: string,
     size: string,
-    date: Date,
+    date: string, // ← continua como string aqui
     category: string | null,
     raw: File,
     public destination: string,
-    public override status: 'Ativo' | 'Inativo', // ← herdado e sobrescrito
+    public override status: 'Ativo' | 'Inativo',
     public companyId: number
   ) {
-    super(name, type, size, date, category, raw, status);
+    super(id, name, type, size, new Date(date), category ?? null, raw, status);
   }
 }
+
