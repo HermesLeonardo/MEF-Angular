@@ -450,5 +450,8 @@ export class FileUploadComponent implements OnInit {
   }
 
 
+  removerArquivoAnexado(file: UploadedFile): void {
+  this.selectedFiles = this.selectedFiles.filter(f => f.id !== file.id);
+}
 
 }
