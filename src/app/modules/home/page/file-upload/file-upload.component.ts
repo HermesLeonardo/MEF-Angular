@@ -103,6 +103,7 @@ export class FileUploadComponent implements OnInit {
 
     file.editing = false;
     this.originalFileNameMap.delete(file);
+    this.destacarComoRecente(file);
   }
 
   private updateStoredFile(file: UploadedFile, originalName: string) {
@@ -305,6 +306,7 @@ export class FileUploadComponent implements OnInit {
   }
 
   downloadFile(file: UploadedFile) {
+    this.destacarComoRecente(file);
     const url = URL.createObjectURL(file.raw);
     const a = document.createElement('a');
     a.href = url;
@@ -314,6 +316,7 @@ export class FileUploadComponent implements OnInit {
   }
 
   previewFile(file: UploadedFile) {
+    this.destacarComoRecente(file);
     const url = URL.createObjectURL(file.raw);
     if (file.type.includes('pdf') || file.type.includes('image') || file.type.includes('text')) {
       window.open(url, '_blank');
@@ -401,6 +404,7 @@ export class FileUploadComponent implements OnInit {
         localStorage.setItem('recentFiles', JSON.stringify(recentFiles));
       }
     }
+    this.destacarComoRecente(file);
   }
 
   limparRecentesOrfaos() {
@@ -418,6 +422,31 @@ export class FileUploadComponent implements OnInit {
     );
 
     localStorage.setItem('recentFiles', JSON.stringify(filtrados));
+  }
+
+  private destacarComoRecente(file: UploadedFile): void {
+    const raw = localStorage.getItem('recentFiles');
+    if (!raw) return;
+
+    const lista: RecentFile[] = JSON.parse(raw);
+
+    const semDuplicata = lista.filter(f => !(f.id === file.id && f.companyId === this.companyId));
+
+    const novoRecente = new RecentFile(
+      file.id,
+      file.name,
+      file.type,
+      file.size,
+      new Date().toISOString(),
+      file.category,
+      file.raw,
+      this.currentCompany?.name || 'Desconhecido',
+      file.status ?? 'Ativo',
+      this.companyId
+    );
+
+    const novaLista = [novoRecente, ...semDuplicata];
+    localStorage.setItem('recentFiles', JSON.stringify(novaLista));
   }
 
 
