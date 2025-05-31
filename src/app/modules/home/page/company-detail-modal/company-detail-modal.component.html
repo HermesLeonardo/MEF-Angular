@@ -1,0 +1,35 @@
+<div class="modal-overlay">
+  <div class="modal-content">
+    <h2>Detalhes da Empresa</h2>
+
+    <form [formGroup]="form" (ngSubmit)="saveChanges()">
+      <label>Nome da empresa</label>
+      <input formControlName="name" />
+
+      <label *ngIf="tipoDocumento === 'cpf'">CPF</label>
+      <label *ngIf="tipoDocumento === 'cnpj'">CNPJ</label>
+      <input formControlName="document" />
+
+      <label>E-mail de contato</label>
+      <input formControlName="email" />
+
+      <label>Telefone</label>
+      <input formControlName="phone" />
+
+      <label>Nome do responsável</label>
+      <input formControlName="responsible" />
+
+      <label>Endereço</label>
+      <input formControlName="address" />
+
+      <label>Quantidade de funcionários</label>
+      <input formControlName="funci_quanti" type="number" />
+
+      <div class="actions">
+        <button class="btn-cancel" type="button" (click)="fechar()">Fechar</button>
+        <button class="btn-edit" type="button" *ngIf="formDisabled" (click)="enableEdit()">Editar</button>
+        <button class="btn-save" type="submit" *ngIf="showSaveButton">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>

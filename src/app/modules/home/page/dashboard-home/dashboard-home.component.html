@@ -1,4 +1,5 @@
 <div class="dashboard-container">
+  <!-- Sidebar -->
   <app-sidebar></app-sidebar>
 
   <div class="main-content">
@@ -8,7 +9,12 @@
         Olá, <strong>{{ usuarioLogado?.nome }}</strong> 👋
       </div>
 
-      <input type="text" class="search-input" placeholder="Pesquisar..." [(ngModel)]="searchQuery" />
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Pesquisar..."
+        [(ngModel)]="searchQuery"
+      />
 
       <div class="dashboard-header-actions">
         <button class="btn-primary" (click)="openAddCompanyModal()">
@@ -20,27 +26,80 @@
 
     <!-- CORPO -->
     <main class="dashboard-body">
-      <!-- Empresas e Clientes -->
+      <!-- Empresas -->
       <section class="companies-section">
         <h2 class="section-title">Empresas</h2>
+
         <div class="company-grid">
-          <app-company-card *ngFor="let company of filteredCompanies" [name]="company.name"
-            [employeeCount]="company.employeeCount" [lastUpdate]="company.lastUpdate" [type]="company.type"
-            (click)="goToCompany(company.id)"></app-company-card>
+          <div
+            class="company-card"
+            *ngFor="let company of filteredCompanies"
+            (click)="goToCompany(company.id)"
+          >
+            <div class="card-header">
+              <div>
+                <h3>{{ company.name }}</h3>
+                <p>{{ company.employeeCount }} Funcionários</p>
+              </div>
+
+              <div class="icon-actions" (click)="$event.stopPropagation()">
+                <button
+                  mat-icon-button
+                  class="edit"
+                  matTooltip="Visualizar/Editar"
+                  (click)="visualizarEmpresa(company, $event)"
+                >
+                  <mat-icon color="accent">visibility</mat-icon>
+                </button>
+
+                <button
+                  mat-icon-button
+                  class="delete"
+                  matTooltip="Excluir"
+                  (click)="excluirEmpresa(company.id, $event)"
+                >
+                  <mat-icon color="warn">delete</mat-icon>
+                </button>
+              </div>
+            </div>
+
+            <div class="card-body">
+              Última atualização:
+              {{ company.lastUpdate | date : 'dd/MM/yyyy' }}
+            </div>
+          </div>
         </div>
 
         <div class="pagination-controls">
-          <button class="pagination-button" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+          <button
+            class="pagination-button"
+            (click)="previousPage()"
+            [disabled]="currentPage === 1"
+          >
+            Anterior
+          </button>
           <span>{{ currentPage }}/{{ totalPages }}</span>
-          <button class="pagination-button" (click)="nextPage()"
-            [disabled]="currentPage === totalPages">Próximo</button>
+          <button
+            class="pagination-button"
+            (click)="nextPage()"
+            [disabled]="currentPage === totalPages"
+          >
+            Próximo
+          </button>
         </div>
       </section>
 
       <!-- Arquivos Recentes -->
       <section class="files-section">
         <h2 class="section-title">Arquivos Recentes</h2>
-        <input type="text" class="search-files" placeholder="Pesquisar arquivos..." [(ngModel)]="searchFile" />
+
+        <input
+          type="text"
+          class="search-files"
+          placeholder="Pesquisar arquivos..."
+          [(ngModel)]="searchFile"
+        />
+
         <table class="files-table">
           <thead>
             <tr>
@@ -51,28 +110,39 @@
               <th>Status</th>
             </tr>
           </thead>
+
           <tbody>
-            <tr *ngFor="let file of filteredFiles" (click)="goToCompany(file.companyId)" style="cursor: pointer;">
+            <tr
+              *ngFor="let file of filteredFiles"
+              (click)="goToCompany(file.companyId)"
+              style="cursor: pointer"
+            >
               <td>{{ file.name }}</td>
               <td>{{ file.destination }}</td>
               <td>{{ file.size }}</td>
-              <td>{{ file.date | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ file.date | date : 'dd/MM/yyyy HH:mm' }}</td>
               <td>
-                <span class="status-indicator"
-                  [ngClass]="{ ativo: file.status === 'Ativo', inativo: file.status !== 'Ativo' }">
+                <span
+                  class="status-indicator"
+                  [ngClass]="{
+                    ativo: file.status === 'Ativo',
+                    inativo: file.status !== 'Ativo'
+                  }"
+                >
                   ● {{ file.status }}
                 </span>
               </td>
             </tr>
           </tbody>
-
         </table>
       </section>
     </main>
-
   </div>
 
-  <app-add-company-modal *ngIf="modalAberto" (close)="fecharModal()"
-    (companyAdded)="atualizarLista()"></app-add-company-modal>
-
+  <!-- Modal de nova empresa -->
+  <app-add-company-modal
+    *ngIf="modalAberto"
+    (close)="fecharModal()"
+    (companyAdded)="atualizarLista()"
+  ></app-add-company-modal>
 </div>

@@ -1,0 +1,12 @@
+<div class="confirm-dialog-container">
+  <h2 class="dialog-title">Confirmação</h2>
+
+  <p class="dialog-message">
+    {{ data.mensagem || 'Tem certeza que deseja excluir esta empresa?' }}
+  </p>
+
+  <div class="button-group">
+    <button class="custom-btn" (click)="cancelar()">Cancelar</button>
+    <button class="custom-btn" (click)="confirmar()">Confirmar</button>
+  </div>
+</div>

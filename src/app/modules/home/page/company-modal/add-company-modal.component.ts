@@ -46,7 +46,7 @@ export class AddCompanyModalComponent {
         cpf: this.selectedType === 'cpf' ? this.form.value.document : '',
         email: this.form.value.email,
         phone: this.form.value.phone || '',
-        responsible_name: this.form.value.responsible || '',
+        responsible: this.form.value.responsible || '',
         address: this.form.value.address || '',
         status: 'ativo',
         created_at: new Date().toISOString(),
@@ -55,7 +55,7 @@ export class AddCompanyModalComponent {
       };
 
 
-    this.companyService.createCompany(novaEmpresa); // Não retorna Observable
+    this.companyService.createCompany(novaEmpresa);
 
     this.companyAdded.emit();
     this.close.emit();
