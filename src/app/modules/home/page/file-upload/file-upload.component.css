@@ -376,3 +376,72 @@ button.mat-mdc-raised-button.mat-primary mat-icon {
 .icon-actions button.status mat-icon {
   color: #a855f7;
 }
+
+
+
+.selected-files {
+  margin-top: 16px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 10px;
+  gap: 16px;
+}
+
+.file-name {
+  flex: 1;
+  color: #f3f4f6;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-category {
+  min-width: 200px;
+}
+
+.remove-button {
+  background-color: #ff4d4f;
+  color: #ffffff;
+  transition: background-color 0.2s ease;
+  border-radius: 4px;
+}
+
+.remove-button:hover {
+  background-color: #d9363e;
+}
+
+.upload-button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+
+::ng-deep .mat-mdc-select-value,
+::ng-deep .mat-mdc-option {
+  color: #ffffff !important;
+}
+
+::ng-deep .mat-mdc-select-placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+
+
+
+
+::ng-deep .mat-mdc-select-value-text {
+  color: #ffffff !important;
+}
+
+::ng-deep .mat-mdc-select-placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}

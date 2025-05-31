@@ -6,6 +6,9 @@ import { ActivatedRoute } from '@angular/router';
 import { UploadedFile, StoredFile } from '../../../../core/models/file.model';
 import { RecentFilesService } from '../../../../core/services/api/recent-files.service';
 import { RecentFile } from '../../../../core/models/file.model';
+import { ProfileService } from '../../../../core/services/api/profile.service';
+import { Profile } from '../../../../core/models/profile.model';
+
 
 @Component({
   selector: 'app-file-upload',
@@ -27,6 +30,7 @@ export class FileUploadComponent implements OnInit {
     'Certificado Digital'
   ];
   status: 'Ativo' | 'Inativo' | undefined;
+  usuario: Profile | null = null;
 
 
   currentFilters: any = {
@@ -44,7 +48,10 @@ export class FileUploadComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private recentFilesService: RecentFilesService) { }
+    private recentFilesService: RecentFilesService,
+    private profileService: ProfileService
+
+  ) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -53,6 +60,9 @@ export class FileUploadComponent implements OnInit {
       const companies = companiesStr ? JSON.parse(companiesStr) : [];
       this.currentCompany = companies.find((c: any) => c.id === this.companyId);
       this.loadPersistedFiles();
+      this.limparRecentesOrfaos();
+      this.usuario = this.profileService.obterDadosUsuarioLogado();
+
     });
   }
 
@@ -102,6 +112,7 @@ export class FileUploadComponent implements OnInit {
 
     file.editing = false;
     this.originalFileNameMap.delete(file);
+    this.destacarComoRecente(file);
   }
 
   private updateStoredFile(file: UploadedFile, originalName: string) {
@@ -125,17 +136,29 @@ export class FileUploadComponent implements OnInit {
   }
 
   deleteFile(file: UploadedFile) {
-    const storedFiles = this.getStoredFiles();
-    const updatedFiles = storedFiles.filter(sf =>
-      !(sf.name === file.name &&
-        sf.date === file.date.toISOString() &&
-        sf.sizeBytes === file.raw.size)
-    );
+    // Remove do localStorage geral
+    const allRaw = localStorage.getItem('uploadedFiles');
+    let allFiles: StoredFile[] = allRaw ? JSON.parse(allRaw) : [];
 
-    localStorage.setItem('uploadedFiles', JSON.stringify(updatedFiles));
-    this.dataSource.data = [...updatedFiles.map(sf => this.storedFileToUploadedFile(sf))];
+    allFiles = allFiles.filter(f => !(f.id === file.id && f.companyId === this.companyId));
+    localStorage.setItem('uploadedFiles', JSON.stringify(allFiles));
+
+    // Remove do recentFiles apenas dessa empresa
+    const recentRaw = localStorage.getItem('recentFiles');
+    if (recentRaw) {
+      const recentFiles = JSON.parse(recentRaw);
+      const filteredRecent = recentFiles.filter((f: any) =>
+        !(f.id === file.id && f.companyId === this.companyId)
+      );
+      localStorage.setItem('recentFiles', JSON.stringify(filteredRecent));
+    }
+
+    // Atualiza visualmente a tabela da empresa atual
+    this.dataSource.data = this.getStoredFiles().map(sf => this.storedFileToUploadedFile(sf));
     this.dataSource._updateChangeSubscription();
   }
+
+
 
   private loadPersistedFiles() {
     const storedFiles = this.getStoredFiles();
@@ -164,13 +187,20 @@ export class FileUploadComponent implements OnInit {
     });
 
     return new UploadedFile(
+      storedFile.id, // ← MANTÉM O ID ORIGINAL
       storedFile.name,
       storedFile.type,
       this.formatFileSize(storedFile.sizeBytes),
       new Date(storedFile.date),
       storedFile.category,
-      file
+      file,
+      storedFile.status ?? 'Ativo'
     );
+  }
+
+
+  private gerarId(): string {
+    return Math.random().toString(36).substring(2, 12) + Date.now();
   }
 
   onFileSelect(event: Event) {
@@ -181,39 +211,42 @@ export class FileUploadComponent implements OnInit {
     this.selectedFiles = [
       ...this.selectedFiles,
       ...files.map(file => new UploadedFile(
+        this.gerarId(), // ← ID ÚNICO
         file.name,
         file.type || file.name.split('.').pop() || 'unknown',
         this.formatFileSize(file.size),
         new Date(),
         null,
-        file
+        file,
+        'Ativo'
       ))
+
     ];
   }
 
   async uploadFiles() {
     const newStoredFiles = await Promise.all(
       this.selectedFiles.map(async (file) => new StoredFile(
+        file.id,
         file.name,
         file.type,
         file.raw.size,
         file.date.toISOString(),
         file.category,
         await this.readFileAsBase64(file.raw),
-        this.companyId
+        this.companyId,
+        file.status ?? 'Ativo'
       ))
     );
 
     const allFilesRaw = localStorage.getItem('uploadedFiles');
     const allFiles: StoredFile[] = allFilesRaw ? JSON.parse(allFilesRaw) : [];
     const cleanedCompanyFiles = allFiles.filter(existing =>
-      existing.companyId !== this.companyId ||
-      !newStoredFiles.some(newFile =>
-        newFile.name === existing.name &&
-        newFile.date === existing.date &&
-        newFile.sizeBytes === existing.sizeBytes
-      )
+      !(existing.companyId === this.companyId &&
+        newStoredFiles.some(newFile => newFile.id === existing.id))
     );
+
+
 
     const updatedFiles = [...cleanedCompanyFiles, ...newStoredFiles];
     localStorage.setItem('uploadedFiles', JSON.stringify(updatedFiles));
@@ -225,16 +258,18 @@ export class FileUploadComponent implements OnInit {
     // 🔁 Atualiza os arquivos recentes
     this.selectedFiles.forEach(f => {
       const recent = new RecentFile(
+        f.id,
         f.name,
         f.type,
         f.size,
-        f.date,
+        typeof f.date === 'string' ? f.date : f.date.toISOString(),
         f.category,
         f.raw,
         this.currentCompany?.name || 'Desconhecido',
-        'Ativo',
+        f.status ?? 'Ativo',
         this.companyId
       );
+
       this.recentFilesService.addFile(recent);
     });
 
@@ -280,6 +315,7 @@ export class FileUploadComponent implements OnInit {
   }
 
   downloadFile(file: UploadedFile) {
+    this.destacarComoRecente(file);
     const url = URL.createObjectURL(file.raw);
     const a = document.createElement('a');
     a.href = url;
@@ -289,6 +325,7 @@ export class FileUploadComponent implements OnInit {
   }
 
   previewFile(file: UploadedFile) {
+    this.destacarComoRecente(file);
     const url = URL.createObjectURL(file.raw);
     if (file.type.includes('pdf') || file.type.includes('image') || file.type.includes('text')) {
       window.open(url, '_blank');
@@ -356,12 +393,8 @@ export class FileUploadComponent implements OnInit {
     if (!allRaw) return;
 
     const allFiles: StoredFile[] = JSON.parse(allRaw);
-    const targetIndex = allFiles.findIndex(f =>
-      f.companyId === this.companyId &&
-      f.name === file.name &&
-      f.date === file.date.toISOString() &&
-      f.sizeBytes === file.raw.size
-    );
+    const targetIndex = allFiles.findIndex(f => f.id === file.id);
+
 
     if (targetIndex !== -1) {
       allFiles[targetIndex].status = file.status;
@@ -372,17 +405,62 @@ export class FileUploadComponent implements OnInit {
     const recentRaw = localStorage.getItem('recentFiles');
     if (recentRaw) {
       const recentFiles = JSON.parse(recentRaw);
-      const match = recentFiles.find((r: any) =>
-        r.name === file.name && r.companyId === this.companyId
-      );
+      const match = recentFiles.find((r: any) => r.id === file.id);
+
+
       if (match) {
         match.status = file.status;
         localStorage.setItem('recentFiles', JSON.stringify(recentFiles));
       }
     }
+    this.destacarComoRecente(file);
+  }
+
+  limparRecentesOrfaos() {
+    const recentRaw = localStorage.getItem('recentFiles');
+    const uploadedRaw = localStorage.getItem('uploadedFiles');
+
+    if (!recentRaw) return;
+
+    const recentFiles = JSON.parse(recentRaw);
+    const uploadedFiles = uploadedRaw ? JSON.parse(uploadedRaw) : [];
+
+    const filtrados = recentFiles.filter((recent: any) =>
+      uploadedFiles.some((up: any) => up.id === recent.id)
+
+    );
+
+    localStorage.setItem('recentFiles', JSON.stringify(filtrados));
+  }
+
+  private destacarComoRecente(file: UploadedFile): void {
+    const raw = localStorage.getItem('recentFiles');
+    if (!raw) return;
+
+    const lista: RecentFile[] = JSON.parse(raw);
+
+    const semDuplicata = lista.filter(f => !(f.id === file.id && f.companyId === this.companyId));
+
+    const novoRecente = new RecentFile(
+      file.id,
+      file.name,
+      file.type,
+      file.size,
+      new Date().toISOString(),
+      file.category,
+      file.raw,
+      this.currentCompany?.name || 'Desconhecido',
+      file.status ?? 'Ativo',
+      this.companyId
+    );
+
+    const novaLista = [novoRecente, ...semDuplicata];
+    localStorage.setItem('recentFiles', JSON.stringify(novaLista));
   }
 
 
-
+  removerArquivoAnexado(file: UploadedFile): void {
+    this.selectedFiles = this.selectedFiles.filter(f => f.id !== file.id);
+  }
 
 }

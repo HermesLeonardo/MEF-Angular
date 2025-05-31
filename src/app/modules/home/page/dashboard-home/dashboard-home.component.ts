@@ -44,8 +44,10 @@ export class DashboardHomeComponent implements OnInit {
   usuarioLogado: any;
 
   ngOnInit(): void {
-    const data = localStorage.getItem('usuario');
-    if (data) this.usuarioLogado = JSON.parse(data);
+    const data = localStorage.getItem('usuario_logado');
+    if (data) {
+      this.usuarioLogado = JSON.parse(data);
+    }
 
     this.loadCompanies();
     this.loadFiles();

@@ -17,19 +17,30 @@
       <div class="selected-files" *ngIf="selectedFiles.length">
         <div class="file-item" *ngFor="let file of selectedFiles">
           <span class="file-name">{{ file.name }}</span>
-          <mat-form-field>
-            <mat-label>Category</mat-label>
+
+          <mat-form-field appearance="outline" class="file-category">
+            <mat-label>Categoria</mat-label>
             <mat-select [(value)]="file.category">
               <mat-option *ngFor="let category of categories" [value]="category">
                 {{ category }}
               </mat-option>
             </mat-select>
           </mat-form-field>
+
+          <!-- Botão remover -->
+          <button mat-icon-button class="remove-button" matTooltip="Remover arquivo"
+            (click)="removerArquivoAnexado(file)">
+            <mat-icon>close</mat-icon>
+          </button>
         </div>
-        <button mat-raised-button color="accent" (click)="uploadFiles()">
-          Upload All
-        </button>
+
+        <div class="upload-button-wrapper">
+          <button mat-raised-button color="accent" (click)="uploadFiles()">
+            Upload All
+          </button>
+        </div>
       </div>
+
     </div>
 
     <!-- Uploaded Files Table with Header Filters -->
@@ -129,7 +140,7 @@
               (click)="previewFile(element); $event.stopPropagation()">
               <mat-icon>visibility</mat-icon>
             </button>
-            <button mat-icon-button class="delete" matTooltip="Excluir"
+            <button mat-icon-button class="delete" matTooltip="Excluir" *ngIf="usuario?.role === 'admin'"
               (click)="deleteFile(element); $event.stopPropagation()">
               <mat-icon>delete</mat-icon>
             </button>
