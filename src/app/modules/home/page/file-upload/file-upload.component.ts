@@ -6,6 +6,9 @@ import { ActivatedRoute } from '@angular/router';
 import { UploadedFile, StoredFile } from '../../../../core/models/file.model';
 import { RecentFilesService } from '../../../../core/services/api/recent-files.service';
 import { RecentFile } from '../../../../core/models/file.model';
+import { ProfileService } from '../../../../core/services/api/profile.service';
+import { Profile } from '../../../../core/models/profile.model';
+
 
 @Component({
   selector: 'app-file-upload',
@@ -27,6 +30,7 @@ export class FileUploadComponent implements OnInit {
     'Certificado Digital'
   ];
   status: 'Ativo' | 'Inativo' | undefined;
+  usuario: Profile | null = null;
 
 
   currentFilters: any = {
@@ -44,7 +48,10 @@ export class FileUploadComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private recentFilesService: RecentFilesService) { }
+    private recentFilesService: RecentFilesService,
+    private profileService: ProfileService
+
+  ) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -54,6 +61,8 @@ export class FileUploadComponent implements OnInit {
       this.currentCompany = companies.find((c: any) => c.id === this.companyId);
       this.loadPersistedFiles();
       this.limparRecentesOrfaos();
+      this.usuario = this.profileService.obterDadosUsuarioLogado();
+
     });
   }
 
@@ -451,7 +460,7 @@ export class FileUploadComponent implements OnInit {
 
 
   removerArquivoAnexado(file: UploadedFile): void {
-  this.selectedFiles = this.selectedFiles.filter(f => f.id !== file.id);
-}
+    this.selectedFiles = this.selectedFiles.filter(f => f.id !== file.id);
+  }
 
 }

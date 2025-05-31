@@ -2,7 +2,7 @@
   <app-sidebar></app-sidebar>
 
   <div class="header-section">
-    <h1 class="company-name">Empresa: {{ currentCompany?.name }}</h1> 
+    <h1 class="company-name">Empresa: {{ currentCompany?.name }}</h1>
 
     <h2>Upload Documents</h2>
 
@@ -140,7 +140,7 @@
               (click)="previewFile(element); $event.stopPropagation()">
               <mat-icon>visibility</mat-icon>
             </button>
-            <button mat-icon-button class="delete" matTooltip="Excluir"
+            <button mat-icon-button class="delete" matTooltip="Excluir" *ngIf="usuario?.role === 'admin'"
               (click)="deleteFile(element); $event.stopPropagation()">
               <mat-icon>delete</mat-icon>
             </button>
