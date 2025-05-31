@@ -63,6 +63,37 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
+.company-card {
+  background-color: #1f2937;
+  padding: 1rem;
+  border-radius: 8px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.company-card:hover {
+  background-color: #273449;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.card-header h3 {
+  margin: 0 0 0.25rem 0;
+}
+
+.card-body {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #cbd5e1;
+}
+
 .pagination-controls {
   display: flex;
   justify-content: center;
@@ -79,6 +110,7 @@
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
+
 .pagination-button:disabled {
   background-color: #94a3b8;
   cursor: not-allowed;
@@ -121,4 +153,34 @@
 
 .status-indicator.inativo {
   color: #ef4444;
+}
+
+    /*  .icon-actions {
+        display: flex;
+        gap: 0.25rem;
+        align-items: center;
+      }
+    */
+.icon-actions .delete mat-icon {
+  color: #ef4444;
+}
+
+.icon-actions .edit mat-icon {
+  color: #22c55e;
+}
+
+.icon-actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.icon-actions button.mat-icon-button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+}
+
+.icon-actions .mat-icon {
+  font-size: 18px;
 }

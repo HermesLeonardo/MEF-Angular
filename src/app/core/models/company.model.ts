@@ -5,7 +5,7 @@ export interface Company {
   cpf: string; // opcional, pois pode ser que não venha
   email: string;
   phone: string;
-  responsible_name: string;
+  responsible: string;
   address: string;
   status: string;
   created_at: string; 
