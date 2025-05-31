@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Company } from '../../../../core/models/company.model';
 import { CompanyService } from '../../../../core/services/api/company.service';
 import { AddCompanyModalComponent } from '../company-modal/add-company-modal.component';
+import { RecentFilesService } from '../../../../core/services/api/recent-files.service';
+import { RecentFile } from '../../../../core/models/file.model';
 
 type CompanyType = 'company' | 'client';
 
@@ -29,7 +31,12 @@ interface FileItem {
   styleUrls: ['./dashboard-home.component.css'],
 })
 export class DashboardHomeComponent implements OnInit {
-  constructor(private router: Router, private companyService: CompanyService) { }
+
+  constructor(
+    private router: Router,
+    private companyService: CompanyService,
+    private recentFilesService: RecentFilesService
+  ) { }
 
   searchQuery = '';
   searchFile = '';
@@ -40,18 +47,18 @@ export class DashboardHomeComponent implements OnInit {
   itemsPerPage = 6;
 
   companies: Company[] = [];
-  files: FileItem[] = [];
+  files: RecentFile[] = [];
 
   usuarioLogado: any;
 
   ngOnInit(): void {
-    const data = localStorage.getItem('usuario');
+    const data = localStorage.getItem('usuario_logado');
     if (data) {
       this.usuarioLogado = JSON.parse(data);
     }
 
     this.loadCompanies();
-    this.loadFiles(); // Aqui futuramente entra a chamada pro backend
+    this.loadFiles();
   }
 
   loadCompanies(): void {
@@ -59,14 +66,10 @@ export class DashboardHomeComponent implements OnInit {
   }
 
 
-  // Esta função está preparada para futura integração com o backend
   loadFiles(): void {
-    this.files = [
-      { name: 'Relatório Financeiro.pdf', destination: 'Empresa X', size: '2.5 MB', date: '03/05/2025', status: 'Ativo' },
-      { name: 'Contrato Assinado.docx', destination: 'Cliente Y', size: '1.3 MB', date: '02/05/2025', status: 'Inativo' },
-    ];
-    // Quando o backend estiver pronto:
-    // this.fileService.getRecentFiles().subscribe(data => this.files = data);
+    this.files = this.recentFilesService.getFiles();
+
+    console.log('Recent files loaded:', this.files);
   }
 
   get totalPages(): number {
@@ -90,7 +93,8 @@ export class DashboardHomeComponent implements OnInit {
     return this.filteredCompaniesAll.slice(start, start + this.itemsPerPage);
   }
 
-  get filteredFiles(): FileItem[] {
+  get filteredFiles(): RecentFile[] {
+
     return this.files.filter(f =>
       f.name.toLowerCase().includes(this.searchFile.toLowerCase())
     );

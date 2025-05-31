@@ -50,7 +50,7 @@
     </div>
 
     <!-- Cadastro de Novo Usuário com estilo padronizado e validação -->
-    <div class="config-card">
+    <div class="config-card" *ngIf="usuario?.role === 'admin'">
       <h3>Cadastrar nova conta</h3>
       <form [formGroup]="formGroup" (ngSubmit)="cadastrarUsuario()"
         style="display: flex; flex-direction: column; gap: 1rem;">

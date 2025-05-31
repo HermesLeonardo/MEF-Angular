@@ -155,7 +155,7 @@ button[mat-raised-button].mat-accent {
 
 .header-filter input::placeholder,
 .header-filter select::placeholder {
-  color:#ffffff;
+  color: #ffffff;
 }
 
 .header-filter input:focus,
@@ -252,17 +252,17 @@ button.mat-mdc-raised-button.mat-primary mat-icon {
 
 
 .action-btn.edit-btn {
-  background-color: #f6ad55; 
+  background-color: #f6ad55;
   margin-bottom: 4px;
 }
 
 .action-btn.save-btn {
-  background-color: var(--accent-color); 
+  background-color: var(--accent-color);
   margin-bottom: 4px;
 }
 
 .action-btn.cancel-btn {
-  background-color: #e53e3e; 
+  background-color: #e53e3e;
   margin-bottom: 4px;
 }
 
@@ -309,14 +309,139 @@ button.mat-mdc-raised-button.mat-primary mat-icon {
 
 
 
+.icon-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+
+.status-indicator {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  /* ← centraliza */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.status-indicator.ativo {
+  background-color: #22c55e;
+}
+
+.status-indicator.inativo {
+  background-color: #ef4444;
+}
 
 
 
 
 
+/* ====== ÍCONES DE AÇÃO COM CORES ====== */
+.icon-actions mat-icon {
+  font-size: 20px;
+  transition: color 0.2s ease;
+}
+
+.icon-actions button[mat-icon-button] {
+  color: #cbd5e1;
+  /* cor base dos ícones */
+}
+
+.icon-actions button[mat-icon-button]:hover mat-icon {
+  color: var(--accent-color);
+  /* cor ao passar o mouse */
+}
+
+.icon-actions button.download mat-icon {
+  color: #00c07f;
+}
+
+.icon-actions button.preview mat-icon {
+  color: #4a90e2;
+}
+
+.icon-actions button.delete mat-icon {
+  color: #ef4444;
+}
+
+.icon-actions button.edit mat-icon {
+  color: #f6ad55;
+}
+
+.icon-actions button.status mat-icon {
+  color: #a855f7;
+}
+
+
+
+.selected-files {
+  margin-top: 16px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 10px;
+  gap: 16px;
+}
+
+.file-name {
+  flex: 1;
+  color: #f3f4f6;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-category {
+  min-width: 200px;
+}
+
+.remove-button {
+  background-color: #ff4d4f;
+  color: #ffffff;
+  transition: background-color 0.2s ease;
+  border-radius: 4px;
+}
+
+.remove-button:hover {
+  background-color: #d9363e;
+}
+
+.upload-button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+
+::ng-deep .mat-mdc-select-value,
+::ng-deep .mat-mdc-option {
+  color: #ffffff !important;
+}
+
+::ng-deep .mat-mdc-select-placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
 
 
 
 
 
+::ng-deep .mat-mdc-select-value-text {
+  color: #ffffff !important;
+}
 
+::ng-deep .mat-mdc-select-placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}

@@ -39,6 +39,8 @@ export class ConfigPageComponent implements OnInit {
 
   ngOnInit() {
     this.alterarTema(this.tema);
+    this.usuario = this.profileService.obterDadosUsuarioLogado(); 
+
   }
 
   alterarTema(novoTema: 'claro' | 'escuro') {
