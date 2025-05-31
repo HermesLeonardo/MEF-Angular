@@ -85,13 +85,24 @@ export class ProfileComponent implements OnInit {
     if (file) {
       this.fotoSelecionada = file;
       const reader = new FileReader();
+
       reader.onload = () => {
-        this.fotoPreviewUrl = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
-        this.mostrarMensagem('Foto selecionada com sucesso!', 'success');
+        const base64 = reader.result as string;
+        this.fotoPreviewUrl = this.sanitizer.bypassSecurityTrustUrl(base64);
+        this.profileService.uploadFoto(this.usuario.id, this.criarFormDataComFoto(file));
+        this.mostrarMensagem('Foto atualizada com sucesso!', 'success');
       };
+
       reader.readAsDataURL(file);
     }
   }
+
+  private criarFormDataComFoto(file: File): FormData {
+    const formData = new FormData();
+    formData.append('foto', file);
+    return formData;
+  }
+
 
   removerFoto() {
     this.fotoSelecionada = null;

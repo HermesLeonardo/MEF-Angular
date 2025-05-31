@@ -19,7 +19,7 @@ export class ProfileService {
     const listaRaw = localStorage.getItem('usuarios');
     const lista: Profile[] = listaRaw ? JSON.parse(listaRaw) : [];
 
-    // Garante unicidade por email (ou cpf/cnpj)
+
     const index = lista.findIndex((u: Profile) =>
       u.id === usuario.id || u.email === usuario.email
     );
@@ -27,7 +27,6 @@ export class ProfileService {
     if (index !== -1) {
       lista[index] = usuario;
     } else {
-      // ⚠️ opcional: log para rastrear se ainda está criando usuário duplicado
       console.warn('[SalvarUsuario] Novo usuário foi adicionado (não encontrado por ID ou email)');
       lista.push(usuario);
     }
@@ -119,23 +118,39 @@ export class ProfileService {
 
 
   cadastrarUsuario(formData: FormData): void {
-    const novoUsuario: Profile = {
-      id: Date.now(),
-      nome: formData.get('name') as string,
-      email: formData.get('email') as string,
-      password: formData.get('password') as string,
-      created_at: new Date(),
-      photo: null,
-      telefone: formData.get('telefone') as string || null,
-      cpf: formData.get('cpf') as string || null,
-      cnpj: formData.get('cnpj') as string || null,
-      role: formData.get('role') as string || 'user'
+    const fotoFile = formData.get('photo') as File | null;
+
+    const criarUsuario = (fotoBase64: string | null) => {
+      const novoUsuario: Profile = {
+        id: Date.now(),
+        nome: formData.get('name') as string,
+        email: formData.get('email') as string,
+        password: formData.get('password') as string,
+        created_at: new Date(),
+        photo: fotoBase64,
+        telefone: formData.get('telefone') as string || null,
+        cpf: formData.get('cpf') as string || null,
+        cnpj: formData.get('cnpj') as string || null,
+        role: formData.get('role') as string || 'user'
+      };
+
+      const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+      usuarios.push(novoUsuario);
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+      // Define também como usuário logado atual, se for o caso
+      localStorage.setItem('usuario_logado', JSON.stringify(novoUsuario));
     };
 
-    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-    usuarios.push(novoUsuario);
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    if (fotoFile) {
+      const reader = new FileReader();
+      reader.onload = () => criarUsuario(reader.result as string);
+      reader.readAsDataURL(fotoFile);
+    } else {
+      criarUsuario(null);
+    }
   }
+
 
 
   getFoto(id: number): string | null {
