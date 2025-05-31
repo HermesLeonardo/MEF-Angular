@@ -144,7 +144,7 @@
               (click)="deleteFile(element); $event.stopPropagation()">
               <mat-icon>delete</mat-icon>
             </button>
-            <button mat-icon-button class="edit" matTooltip="Editar"
+            <button mat-icon-button class="edit" matTooltip="Editar" *ngIf="usuario?.role === 'admin'"
               (click)="startEditing(element); $event.stopPropagation()">
               <mat-icon>edit</mat-icon>
             </button>

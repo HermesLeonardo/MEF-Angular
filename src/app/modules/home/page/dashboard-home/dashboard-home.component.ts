@@ -7,6 +7,8 @@ import { RecentFile } from '../../../../core/models/file.model';
 import { MatDialog } from '@angular/material/dialog';
 import { CompanyDetailModalComponent } from '../company-detail-modal/company-detail-modal.components';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ProfileService } from '../../../../core/services/api/profile.service';
+import { Profile } from '../../../../core/models/profile.model';
 
 type CompanyType = 'company' | 'client';
 
@@ -29,9 +31,10 @@ export class DashboardHomeComponent implements OnInit {
     private router: Router,
     private companyService: CompanyService,
     private recentFilesService: RecentFilesService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private profileService: ProfileService
   ) {}
-
+  
   searchQuery = '';
   searchFile = '';
   modalAberto = false;
@@ -43,6 +46,7 @@ export class DashboardHomeComponent implements OnInit {
   files: RecentFile[] = [];
   usuarioLogado: any;
 
+  usuario: Profile | null = null;
   ngOnInit(): void {
     const data = localStorage.getItem('usuario_logado');
     if (data) {
@@ -51,6 +55,7 @@ export class DashboardHomeComponent implements OnInit {
 
     this.loadCompanies();
     this.loadFiles();
+    this.usuario = this.profileService.obterDadosUsuarioLogado(); 
   }
 
   loadCompanies(): void {

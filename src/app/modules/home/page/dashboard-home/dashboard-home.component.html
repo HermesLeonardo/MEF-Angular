@@ -57,6 +57,7 @@
                   class="delete"
                   matTooltip="Excluir"
                   (click)="excluirEmpresa(company.id, $event)"
+                  *ngIf="usuario?.role === 'admin'"
                 >
                   <mat-icon color="warn">delete</mat-icon>
                 </button>
