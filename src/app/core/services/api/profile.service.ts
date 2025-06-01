@@ -85,9 +85,12 @@ export class ProfileService {
     const usuarioAtual = this.getUsuario();
     if (!usuarioAtual) return false;
 
-    if (usuarioAtual.password !== dados.senhaAtual) return false;
+    const senhaArmazenada = (usuarioAtual.password || '').trim();
+    const senhaInformada = (dados.senhaAtual || '').trim();
 
-    usuarioAtual.password = dados.novaSenha;
+    if (senhaArmazenada !== senhaInformada) return false;
+
+    usuarioAtual.password = dados.novaSenha.trim();
     this.salvarUsuario(usuarioAtual);
     return true;
   }
@@ -138,8 +141,7 @@ export class ProfileService {
       usuarios.push(novoUsuario);
       localStorage.setItem('usuarios', JSON.stringify(usuarios));
 
-      // Define também como usuário logado atual, se for o caso
-      localStorage.setItem('usuario_logado', JSON.stringify(novoUsuario));
+      //localStorage.setItem('usuario_logado', JSON.stringify(novoUsuario));
     };
 
     if (fotoFile) {

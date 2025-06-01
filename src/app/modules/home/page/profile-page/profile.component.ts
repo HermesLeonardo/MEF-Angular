@@ -132,10 +132,11 @@ export class ProfileComponent implements OnInit {
 
 
   atualizarSenha() {
-    if (this.novaSenha !== this.confirmarSenha) {
+    if (this.novaSenha.trim() !== this.confirmarSenha.trim()) {
       this.mostrarMensagem('As senhas não coincidem', 'error');
       return;
     }
+
 
     const sucesso = this.profileService.atualizarSenha({
       senhaAtual: this.senhaAtual,

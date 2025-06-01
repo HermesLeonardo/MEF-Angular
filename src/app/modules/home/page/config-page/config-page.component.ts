@@ -88,7 +88,7 @@ export class ConfigPageComponent implements OnInit {
 
     this.formGroup.reset();
 
-    this.snackBar.open('✅ Usuário cadastrado com sucesso!', 'Fechar', {
+    this.snackBar.open(' Usuário cadastrado com sucesso!', 'Fechar', {
       duration: 3000,
       horizontalPosition: 'right',
       verticalPosition: 'top',
