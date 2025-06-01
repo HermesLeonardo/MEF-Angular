@@ -1,59 +1,82 @@
-# MEFAngular
+# MEF Angular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.5.
+Este projeto é a interface web do sistema **MEF**, desenvolvido em Angular 19.2.5, com foco em gestão de usuários, empresas e arquivos. A aplicação utiliza um conjunto moderno de bibliotecas para fornecer uma experiência fluida, responsiva e funcional.
 
-## Development server
+## ✅ Versões e Tecnologias
 
-To start a local development server, run:
+- **Angular**: 19.2.5  
+- **Node**: 20+ recomendado  
+- **Angular Material**: UI moderna com componentes prontos  
+- **NGX-Mask**: Máscaras de entrada (CPF, CNPJ, telefone etc.)  
+- **TypeScript**: tipagem segura  
+- **HTML/CSS**: estilização customizada com tema escuro  
 
+## 🚀 Funcionalidades Principais
+
+- Cadastro e login de usuários
+- Edição de perfil com foto
+- Máscaras de CPF/CNPJ/telefone
+- Cadastro e visualização de empresas
+- Upload e gerenciamento de arquivos (por empresa)
+- Modal de confirmação visual
+- Integração com `localStorage` para persistência de dados
+- Interface responsiva com Angular Material
+
+## 📦 Instalação das Dependências
+
+Após clonar o repositório, execute:
+
+```bash
+npm install
+```
+
+▶️ Executar o projeto localmente
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## Code scaffolding
+Depois, acesse em: http://localhost:4200
+-
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+# 📚 Bibliotecas Instaladas
+🔹 Angular Material
 
+Instalação:
 ```bash
-ng generate component component-name
+ng add @angular/material
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Componentes utilizados:
+- MatInputModule
+
+- MatButtonModule
+- MatIconModule
+- MatDialogModule
+- MatSnackBarModule
+- MatTableModule
+- MatTooltipModule
+- MatSelectModule
+
+ 
+
+# 🔹 NGX-Mask
+Instalação:
 
 ```bash
-ng generate --help
+npm install ngx-mask
 ```
-
-## Building
-
-To build the project run:
-
+### Importação e configuração:
 ```bash
-ng build
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+
+@NgModule({
+  imports: [NgxMaskDirective],
+  providers: [provideNgxMask()]
+})
+
 ```
+# 
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+# 👥 Equipe
+Este projeto foi desenvolvido para fins educacionais e internos. Sinta-se à vontade para adaptar e expandir conforme necessário.
