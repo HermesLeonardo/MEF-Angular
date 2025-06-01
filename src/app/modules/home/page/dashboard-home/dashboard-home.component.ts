@@ -33,8 +33,8 @@ export class DashboardHomeComponent implements OnInit {
     private recentFilesService: RecentFilesService,
     private dialog: MatDialog,
     private profileService: ProfileService
-  ) {}
-  
+  ) { }
+
   searchQuery = '';
   searchFile = '';
   modalAberto = false;
@@ -55,7 +55,7 @@ export class DashboardHomeComponent implements OnInit {
 
     this.loadCompanies();
     this.loadFiles();
-    this.usuario = this.profileService.obterDadosUsuarioLogado(); 
+    this.usuario = this.profileService.obterDadosUsuarioLogado();
   }
 
   loadCompanies(): void {
@@ -117,13 +117,25 @@ export class DashboardHomeComponent implements OnInit {
     this.router.navigate(['/file-upload', id]);
   }
 
-  visualizarEmpresa(company: FrontendCompany, event: MouseEvent) {
+  visualizarEmpresa(companySummary: FrontendCompany, event: MouseEvent) {
     event.stopPropagation();
-    this.dialog.open(CompanyDetailModalComponent, {
-      data: { company },
+
+    const fullCompany = this.companyService.getCompanyById(companySummary.id);
+    if (!fullCompany) return;
+
+    const dialogRef = this.dialog.open(CompanyDetailModalComponent, {
+      data: { company: fullCompany },
       width: '600px'
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'atualizado') {
+        this.atualizarLista(); 
+      }
+    });
   }
+
+
 
   excluirEmpresa(companyId: number, event: MouseEvent): void {
     event.stopPropagation();
