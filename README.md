@@ -78,5 +78,11 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 ```
 # 
 
+### Para o seu primeiro acesso ao sistema, ele conta com um usuario admin padrão
+
+Email: admin@admin.com
+
+senha: admin
+
 # 👥 Equipe
 Este projeto foi desenvolvido para fins educacionais e internos. Sinta-se à vontade para adaptar e expandir conforme necessário.
