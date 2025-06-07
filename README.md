@@ -84,5 +84,10 @@ Email: admin@admin.com
 
 senha: admin
 
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## MER
+![Diagrama MER](src/app/assets/images/MER.jpg)
+
 # 👥 Equipe
 Este projeto foi desenvolvido para fins educacionais e internos. Sinta-se à vontade para adaptar e expandir conforme necessário.
