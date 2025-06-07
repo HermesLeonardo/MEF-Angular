@@ -56,7 +56,7 @@
       </div>
       <div class="info-row" *ngIf="editando">
         <i class="pi pi-phone"></i>
-        <input [(ngModel)]="usuario.telefone" placeholder="Telefone" />
+        <input [(ngModel)]="usuario.telefone" placeholder="Telefone" mask="(00) 00000-0000" />
       </div>
 
       <!-- CPF -->

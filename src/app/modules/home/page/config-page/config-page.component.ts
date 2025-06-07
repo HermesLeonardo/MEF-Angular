@@ -38,25 +38,10 @@ export class ConfigPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.alterarTema(this.tema);
     this.usuario = this.profileService.obterDadosUsuarioLogado(); 
 
   }
 
-  alterarTema(novoTema: 'claro' | 'escuro') {
-    this.tema = novoTema;
-    const root = document.documentElement;
-
-    if (novoTema === 'claro') {
-      root.style.setProperty('--bg-color', '#f1f5f9');
-      root.style.setProperty('--card-bg', '#ffffff');
-      root.style.setProperty('--text-color', '#0f172a');
-    } else {
-      root.style.setProperty('--bg-color', '#0f172a');
-      root.style.setProperty('--card-bg', '#1e293b');
-      root.style.setProperty('--text-color', '#ffffff');
-    }
-  }
 
   handleFileInput(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -88,7 +73,7 @@ export class ConfigPageComponent implements OnInit {
 
     this.formGroup.reset();
 
-    this.snackBar.open('✅ Usuário cadastrado com sucesso!', 'Fechar', {
+    this.snackBar.open(' Usuário cadastrado com sucesso!', 'Fechar', {
       duration: 3000,
       horizontalPosition: 'right',
       verticalPosition: 'top',

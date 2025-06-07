@@ -27,7 +27,8 @@
 
       <div class="actions">
         <button class="btn-cancel" type="button" (click)="fechar()">Fechar</button>
-        <button class="btn-edit" type="button" *ngIf="formDisabled" (click)="enableEdit()">Editar</button>
+        <button class="btn-edit" type="button" *ngIf="formDisabled && usuario?.role === 'admin'"
+          (click)="enableEdit()">Editar</button>
         <button class="btn-save" type="submit" *ngIf="showSaveButton">Salvar</button>
       </div>
     </form>
